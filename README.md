@@ -18,7 +18,7 @@ nxs2dat('12345.nxs')
 *numpy* and *h5py*
 
 
-### Current Issues
+### Current Issues / ToDo
 
  - Should metadata strings have quotes?
  - Are blank strings in metadata ok?
