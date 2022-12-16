@@ -26,6 +26,7 @@ nxs2dat('12345.nxs')
  - Generate Old style detector path spec
  - Generate header with time/date
  - Missing 'cmd' in metadata?
+ - How to handle multi-dimensional scans? 
  - Loss of order information in scan data
  - Add Scan data shortcut for NXclassic_scan 
  - write dat file
