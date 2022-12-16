@@ -49,18 +49,25 @@ def nxs2dat(filename):
         metadata = {}
         scandata = {}
         for n in range(n_datasets):
+            name = address_name(all_addresses[n])
             if all_datasets[n].id not in meta_ids and all_datasets[n].size == 1:
+                # --- Metadata ---
                 meta_ids.append(all_datasets[n].id)
                 # metadata[address_name(all_addresses[n])] = squeeze(all_datasets[n])
                 try:
-                    metadata[address_name(all_addresses[n])] = float(squeeze(all_datasets[n]))
+                    metadata[name] = float(squeeze(all_datasets[n]))
                 except ValueError:
-                    metadata[address_name(all_addresses[n])] = '"%s"' % all_datasets[n][()]
+                    metadata[name] = "'%s'" % all_datasets[n][()]
+
+                # This is a horrid hack for cmd
+                if name == 'scan_command' and 'cmd' not in metadata:
+                    metadata['cmd'] = "'%s'" % all_datasets[n][()]
             elif all_datasets[n].id not in scan_ids and all_datasets[n].ndim ==1 and all_datasets[n].size == scan_length:
+                # --- Scandata ---
                 scan_ids.append(all_datasets[n].id)
                 try:
-                    # Only add floats/ ints
-                    scandata[address_name(all_addresses[n])] = squeeze(all_datasets[n]) * 1.0
+                    # Only add floats
+                    scandata[name] = squeeze(all_datasets[n]) * 1.0
                 except TypeError:
                     pass
 
