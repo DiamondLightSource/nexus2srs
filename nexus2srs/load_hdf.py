@@ -48,17 +48,18 @@ def load_scan_meta_data(filename):
         # --- Load Data ---
         # Loop through each dataset, comparing ids to not replicate data
         #  if dataset is size==1, add to metadata
-        # if dataset is size==scan_length array, add to scandata
-        meta_ids = []
-        scan_ids = []
+        #  if dataset is size==scan_length array, add to scandata
+        ids = []
         metadata = {}
         scandata = {}
         for n in range(n_datasets):
+            if all_datasets[n].id in ids:
+                continue
+            ids.append(all_datasets[n].id)
             name = address_name(all_addresses[n])
 
             # --- Metadata ---
-            if all_datasets[n].id not in meta_ids and all_datasets[n].size == 1:
-                meta_ids.append(all_datasets[n].id)
+            if all_datasets[n].size == 1:
                 # metadata[address_name(all_addresses[n])] = squeeze(all_datasets[n])
                 try:
                     metadata[name] = float(squeeze(all_datasets[n]))
@@ -70,10 +71,7 @@ def load_scan_meta_data(filename):
                     metadata['cmd'] = "'%s'" % all_datasets[n][()]
 
             # ---Scandata ---
-            elif all_datasets[n].id not in scan_ids and \
-                    all_datasets[n].ndim == 1 and \
-                    all_datasets[n].size == scan_length:
-                scan_ids.append(all_datasets[n].id)
+            elif all_datasets[n].ndim == 1 and all_datasets[n].size == scan_length:
                 try:
                     # Only add floats
                     scandata[name] = squeeze(all_datasets[n]) * 1.0
@@ -83,7 +81,11 @@ def load_scan_meta_data(filename):
 
 
 def nxs2dat(filename):
-    """Load HDF file"""
+    """
+    Load HDF file and convert to classic SRS .dat file
+    :param filename: str filename of HDF/Nexus file
+    :return: None
+    """
 
     scandata, metadata = load_scan_meta_data(filename)
 
