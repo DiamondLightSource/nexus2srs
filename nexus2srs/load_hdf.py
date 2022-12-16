@@ -12,8 +12,13 @@ def address_name(address):
     return os.path.basename(address)
 
 
-def nxs2dat(filename):
-    """Load HDF file"""
+def load_scan_meta_data(filename):
+    """
+    Create dicts of metadata and scan data from hdf file
+    :param filename: str filename of HDF/Nexus file
+    :return scandata: {name: array} dict of scanned data, all fields have n length arrays
+    :return metadata: {name: value} dict of metadata, all fields are float/int/str
+    """
 
     with h5py.File(filename, 'r') as hdf:
 
@@ -50,8 +55,9 @@ def nxs2dat(filename):
         scandata = {}
         for n in range(n_datasets):
             name = address_name(all_addresses[n])
+
+            # --- Metadata ---
             if all_datasets[n].id not in meta_ids and all_datasets[n].size == 1:
-                # --- Metadata ---
                 meta_ids.append(all_datasets[n].id)
                 # metadata[address_name(all_addresses[n])] = squeeze(all_datasets[n])
                 try:
@@ -62,16 +68,27 @@ def nxs2dat(filename):
                 # This is a horrid hack for cmd
                 if name == 'scan_command' and 'cmd' not in metadata:
                     metadata['cmd'] = "'%s'" % all_datasets[n][()]
-            elif all_datasets[n].id not in scan_ids and all_datasets[n].ndim ==1 and all_datasets[n].size == scan_length:
-                # --- Scandata ---
+
+            # ---Scandata ---
+            elif all_datasets[n].id not in scan_ids and \
+                    all_datasets[n].ndim == 1 and \
+                    all_datasets[n].size == scan_length:
                 scan_ids.append(all_datasets[n].id)
                 try:
                     # Only add floats
                     scandata[name] = squeeze(all_datasets[n]) * 1.0
                 except TypeError:
                     pass
+        return scandata, metadata
+
+
+def nxs2dat(filename):
+    """Load HDF file"""
+
+    scandata, metadata = load_scan_meta_data(filename)
 
     # --- Print data ---
+    scan_length = len(next(iter(scandata.values())))
     print('Nexus File: %s' % filename)
     print('Scan length: %s' % scan_length)
     print('--- Metadata ---')
