@@ -4,18 +4,10 @@ Play with hdf files
 
 import h5py
 import numpy as np
+from nexus2srs.load_hdf import get_all_datasets
 
 # hdf = h5py.File('794932.nxs', 'r')
 hdf = h5py.File('879486.nxs', 'r')  # 2D scan
 
-dataset_addresses = []
-all_datasets = []
 
-def get_dataset_addresses(name, obj):
-    if isinstance(obj, h5py.Dataset):
-        print(name, obj.shape, obj.size, obj.dtype)
-        dataset_addresses.append(name)
-        all_datasets.append(obj)
-
-hdf.visititems(get_dataset_addresses)
-
+all_addresses, all_datasets = get_all_datasets(hdf)

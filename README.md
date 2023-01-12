@@ -1,10 +1,14 @@
 # nexus2srs
-Lightweight function to convert Nexus (.nxs) scan Files to the classic SRS .dat files.
+Lightweight function to convert Nexus (.nxs) scan Files to the classic ascii SRS .dat files.
+
+
+By Dan Porter, *Diamond Light Source Ltd.* 2023
+
 
 ### Usage
 From Terminal:
 ```
-$ python -m nexus2srs '12345.nxs'
+$ python -m nexus2srs '12345.nxs' '12345.dat'
 ```
 
 In Python script:
@@ -20,13 +24,7 @@ nxs2dat('12345.nxs')
 
 ### Current Issues / ToDo
 
- - Should metadata strings have quotes?
- - Are blank strings in metadata ok?
- - Strings in scandata
- - Generate Old style detector path spec
- - Generate header with time/date
- - Missing 'cmd' in metadata?
- - How to handle multi-dimensional scans? 
+ - Creation of TIF images from HDF
  - Loss of order information in scan data
- - Add Scan data shortcut for NXclassic_scan 
- - write dat file
+ - Missing scancn commands (loss of original scan command)
+ - Missing metadta - kgam, kdelta, kap, kth, kmu

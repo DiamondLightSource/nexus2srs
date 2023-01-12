@@ -2,19 +2,19 @@
 nexus2srs
 Lightweight function to convert Nexus (.nxs) scan Files to the classic SRS .dat files.
 
-Usage:
+Usage (in python):
 >> from nexus2srs import nxs2dat
->> nxs2dat('12345.nxs')
+>> nxs2dat('12345.nxs', '12345.dat')
+
+Usage (from terminal):
+$ python -m nexus2srs 12345.nxs 12345.dat
 
 By Dan Porter, PhD
 Diamond Light Source Ltd.
 2022
 """
 
-from nexus2srs.load_hdf import nxs2dat
-
-__version__ = "0.1.0"
-__date__ = "2022/12/16"
+from nexus2srs.load_hdf import nxs2dat, __date__, __version__
 
 
 def version_info():
