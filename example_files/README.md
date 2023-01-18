@@ -15,4 +15,5 @@
 | 794932 | eta scan    | scancn eta 0.01 61 BeamOK pil3_100k 1 roi2 |
 | 815893 | NXclassic_scan | scan eta 30.97 32.56 0.02 BeamOK pil3_100k 1 roi2 |
 | 879486 | 2D scan     | scan sz 9.45 9.55 0.05 sperp -0.2 0.2 0.02 pil3_100k 1 roi2 |
+| 970792 | kdelta scan | Missing measurement, scan length < 6 |
 

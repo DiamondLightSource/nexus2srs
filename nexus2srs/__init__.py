@@ -14,7 +14,8 @@ Diamond Light Source Ltd.
 2022
 """
 
-from nexus2srs.load_hdf import nxs2dat, __date__, __version__
+# from nexus2srs.nexus2srs import nxs2dat, __date__, __version__
+from nexus2srs.nexus2srs_2 import nxs2dat, __date__, __version__
 
 
 def version_info():
