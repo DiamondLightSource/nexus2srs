@@ -11,11 +11,10 @@ $ python -m nexus2srs 12345.nxs 12345.dat
 
 By Dan Porter, PhD
 Diamond Light Source Ltd.
-2022
+2023
 """
 
-# from nexus2srs.nexus2srs import nxs2dat, __date__, __version__
-from nexus2srs.nexus2srs_2 import nxs2dat, __date__, __version__
+from nexus2srs.nexus2srs import nxs2dat, __date__, __version__
 
 
 def version_info():

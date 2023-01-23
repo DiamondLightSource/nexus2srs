@@ -4,12 +4,14 @@ Play with hdf files
 
 import h5py
 import numpy as np
-from nexus2srs.nexus2srs import get_all_datasets, find_dataset
+from PIL import Image
+from nexus2srs.nexus2srs_old import get_all_datasets, find_dataset
 import time
 
 # hdf = h5py.File('794932.nxs', 'r')
 # hdf = h5py.File('example_files/879486.nxs', 'r')  # 2D scan
-hdf = h5py.File("example_files/815893.nxs", 'r')  # NXclassic_scan
+#hdf = h5py.File("example_files/815893.nxs", 'r')  # NXclassic_scan
+hdf = h5py.File(r"\\data.diamond.ac.uk\i16\data\2022\cm31138-1\914860.nxs")
 
 
 address_datasets = get_all_datasets(hdf)

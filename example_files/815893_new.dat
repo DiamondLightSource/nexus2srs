@@ -6,6 +6,7 @@
 <MetaDataAtStart>
 cmd=scan eta 30.9680320352948 32.5680320352948 0.02 BeamOK pil3_100k 1 roi2
 date=Sun Feb 23 02:19:17 2020
+pilatus3_100k_path_template=815893-pilatus3_100k-files/%05d.tif
 ppchi=-44.999841517
 pppiezo1=0.0
 pppiezo2=12345.012359999999
@@ -161,6 +162,40 @@ alpha2=90.0
 alpha3=90.0
 b=5.534864620207587
 c=19.528761674681764
+definition='NXclassic_scan'
+end_time='[b'2020-02-23T02:22:47.554Z']'
+entry_identifier=815893.0
+attenuator_transmission=1.0
+soft_limit_max=115.0
+soft_limit_min=-22.0
+name='Default Sample'
+calibration_date='2018-07-11 11:15:52'
+calibration_scan_number=705061.0
+depends_on='/entry1/sample/transformations/phi'
+description=' '
+id=' '
+fast_pixel_direction=0.172
+module_offset=0.0
+slow_pixel_direction=0.172
+saturation_value=1000000.0
+sensor_material='Silicon'
+sensor_thickness=0.32
+origin_offset=1.0
+type='Synchrotron X-Ray Source'
+current=298.0366
+energy=3.0009
+probe='x-ray'
+program_name='GDA 9.15.0'
+incident_energy=2.9670000254332995
+incident_wavelength=0.4178772884068688
+called_by='Not yet implemented in GDA'
+scan_command='scan eta 30.9680320352948 32.5680320352948 0.02 BeamOK pil3_100k 1 roi2'
+start_time='2020-02-23T02:19:17.647Z'
+title='scan eta 30.9680320352948 32.5680320352948 0.02 BeamOK pil3_100k 1 roi2'
+scan_dimensions=81.0
+scan_identifier='26505c22-4dbe-44f7-be08-c6851e99cb05'
+title_old='Scan of sample with GDA'
+username='i16user'
 </MetaDataAtStart>
  &END
        eta	    beamOK	      kphi	       kap	       kth	       kmu	    kdelta	      kgam	delta_axis_offset	   TimeSec	TimeFromEpoch	ic1monitor	        rc	count_time	      path	      maxx	      maxy	    maxval	       sum	 roi2_maxx	 roi2_maxy	roi2_maxval	  roi2_sum
