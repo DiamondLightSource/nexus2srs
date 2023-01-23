@@ -43,6 +43,7 @@ NXRUN = 'entry_identifier'
 NXCMD = 'scan_command'
 NXDATE = 'start_time'
 NXIMAGE = 'image_data'
+NXDETECTOR = 'NXdetector'
 NXDATA = 'data'
 NXATTR = 'gda_field_name'  # dataset attribute name
 
@@ -161,7 +162,7 @@ def get_hdf_data(hdf):
     # search group list
     measurement_groups = [grp for adr, grp, _ in address_groups if address_name(adr) == NXMEASUREMENT and len(grp) > 0]
     # location of 3D detector image data
-    data_address = [adr + '/data' for adr, grp, cls in address_groups if cls == 'NXdetector' and 'data' in grp]
+    data_address = [adr + '/' + NXDATA for adr, grp, cls in address_groups if cls == NXDETECTOR and NXDATA in grp]
 
     # find scan data
     ids = []
