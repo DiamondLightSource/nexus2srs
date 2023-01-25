@@ -25,7 +25,7 @@ f = r"C:\Users\grp66007/OneDrive - Diamond Light Source Ltd/I16/Nexus_Format/exa
 # f = r"\\data.diamond.ac.uk\i16\data\2022\cm31138-9\937171.nxs"
 # f = r"C:\Users\grp66007/OneDrive - Diamond Light Source Ltd/I16/Nexus_Format/example_nexus\782761.nxs"
 f = r"C:\Users\grp66007\OneDrive - Diamond Light Source Ltd\I16\Nexus_Format\I10_nexus\example_I10_Nexus_Files\i10-608314.nxs"  # I10 scan
-nxs2dat(f, 'test.dat', False)
+# nxs2dat(f, 'test.dat', True)
 
 tests = [
     "example_files/782761.nxs",
@@ -42,11 +42,12 @@ tests = [
     r"\\data.diamond.ac.uk\i16\data\2022\cm31138-9\937171.nxs",
     r"C:\Users\grp66007/OneDrive - Diamond Light Source Ltd/I16/Nexus_Format/example_nexus\782761.nxs",
 ]
-# t0 = time.time()
-# for f in tests:
-#     nxs2dat(f, 'test.dat')
-# t1 = time.time()
-# print('Tests took: %s s' % (t1 - t0))
+t0 = time.time()
+for f in tests:
+    nxs2dat(f, 'test.dat')
+t1 = time.time()
+dif = t1 - t0
+print('Tests took: %.2f s for %d files, %.3s per file' % (dif, len(tests), dif/len(tests)))
 
 
 

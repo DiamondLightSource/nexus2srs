@@ -31,8 +31,8 @@ import h5py
 from collections import Counter
 from numpy import squeeze, reshape, ndindex
 
-__version__ = "0.5.0"
-__date__ = "2023/01/23"
+__version__ = "0.5.1"
+__date__ = "2023/01/25"
 
 # --- Default HDF Names ---
 NXSCANFIELDS = 'scan_fields'
@@ -97,6 +97,8 @@ def get_datasets_groups(hdf):
                 nx_class = obj.attrs['NX_class'].decode() if 'NX_class' in obj.attrs else ''
             except AttributeError:
                 nx_class = obj.attrs['NX_class']
+            except OSError:
+                nx_class = ''  # if object does't have attribute (i16 scan
             groups.append((address, obj, nx_class))
         elif isinstance(obj, h5py.Dataset):
             # handle situation where dataset value is stored in named collection e.g. /before_scan/s1x/value
@@ -120,7 +122,7 @@ def write_image(image, filename):
     if os.path.isfile(filename):
         return
     from PIL import Image
-    im = Image.fromarray(image, mode='F')
+    im = Image.fromarray(image)
     im.save(filename, "TIFF")
     print('Written image to %s' % filename)
 
@@ -235,8 +237,8 @@ def get_hdf_data(hdf):
         date = datetime.datetime.fromtimestamp(os.path.getctime(hdf.filename))
 
     req_meta = {
-        'cmd': hdf[scan_cmd_address][()] if scan_cmd_address else '',
-        'date': date.strftime('%a %b %d %H:%M:%S %Y'),
+        'cmd': dataset2metadata(hdf[scan_cmd_address]) if scan_cmd_address else '',
+        'date': date.strftime("'%a %b %d %H:%M:%S %Y'"),
     }
     # Image data path
     if scan_image_address:
@@ -248,7 +250,7 @@ def get_hdf_data(hdf):
             detector_name = image_path.split('-')[1]
         except IndexError:
             detector_name = 'image'
-        req_meta[detector_name + '_path_template'] = image_path + '/' + PATH_TEMPLATE
+        req_meta[detector_name + '_path_template'] = "'%s/%s'" % (image_path, PATH_TEMPLATE)
 
     req_meta.update(**metadata)
 
@@ -292,18 +294,20 @@ def nxs2dat(nexus_file, dat_file=None, write_tif=False):
             print('image addresses: %s' % data_addresses)
             for scan_data_address in data_addresses:
                 # Create image name tempate e.g. '879486-pilatus3_100k-files/00063.tif'
-                det_name = os.path.split(scan_data_address)[-2]  # /entry/detector/data
+                det_name = scan_data_address.split('/')[-2]  # /entry/detector/data
                 det_folder = '%s-%s-files' % (runno, det_name)
-                template = '%s/%s' % (det_folder, PATH_TEMPLATE)
-                metadata['%s_path_template' % det_name] = template
+                template = "%s/%s" % (det_folder, PATH_TEMPLATE)
+                metadata['%s_path_template' % det_name] = "'%s'" % template
                 # Create image folder
                 det_dir = os.path.join(scan_dir, det_folder)
                 os.makedirs(det_dir, exist_ok=True)
                 print('Created folder: %s' % det_dir)
                 # Write TIF images
                 data = hdf[scan_data_address]
-                for n, idx in enumerate(ndindex(data.shape[:2])):  # ndindex returns index of each image in scan
-                    write_image(data[idx], os.path.join(det_dir, template % n))
+                # Assume first index is the scan index
+                for im, idx in enumerate(ndindex(data.shape[:-2])):  # ndindex returns index iterator of each image
+                    print(idx, data[idx].shape)
+                    write_image(data[idx], template % (im+1))
 
     # --- Scan length ---
     scan_length = len(next(iter(scandata.values()))) if scandata else 0
@@ -335,13 +339,20 @@ def nxs2dat(nexus_file, dat_file=None, write_tif=False):
 
 if __name__ == '__main__':
     import sys
+    tot = 0
     for n, arg in enumerate(sys.argv):
         if arg == '-h' or arg.lower() == '--help':
+            tot += 1
             print(__doc__)
         if arg.endswith('.nxs'):
+            tot += 1
             dat = sys.argv[n + 1] if len(sys.argv) > n + 1 and sys.argv[n + 1].endswith('.dat') else None
             if '-tif' in sys.argv:
                 nxs2dat(arg, dat, True)
             else:
                 nxs2dat(arg, dat, False)
 
+    if tot > 1:
+        print('\nCompleted %d conversions' % tot)
+    else:
+        print(__doc__)
