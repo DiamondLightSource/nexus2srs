@@ -31,8 +31,8 @@ import h5py
 from collections import Counter
 from numpy import squeeze, reshape, ndindex
 
-__version__ = "0.5.1"
-__date__ = "2023/01/25"
+__version__ = "0.5.2"
+__date__ = "2023/12/15"
 
 # --- Default HDF Names ---
 NXSCANFIELDS = 'scan_fields'
@@ -98,7 +98,7 @@ def get_datasets_groups(hdf):
             except AttributeError:
                 nx_class = obj.attrs['NX_class']
             except OSError:
-                nx_class = ''  # if object does't have attribute (i16 scan
+                nx_class = ''  # if object doesn't have attribute (i16 scan)
             groups.append((address, obj, nx_class))
         elif isinstance(obj, h5py.Dataset):
             # handle situation where dataset value is stored in named collection e.g. /before_scan/s1x/value
@@ -300,14 +300,15 @@ def nxs2dat(nexus_file, dat_file=None, write_tif=False):
                 metadata['%s_path_template' % det_name] = "'%s'" % template
                 # Create image folder
                 det_dir = os.path.join(scan_dir, det_folder)
+                im_file = os.path.join(det_dir, PATH_TEMPLATE)
                 os.makedirs(det_dir, exist_ok=True)
                 print('Created folder: %s' % det_dir)
                 # Write TIF images
                 data = hdf[scan_data_address]
                 # Assume first index is the scan index
                 for im, idx in enumerate(ndindex(data.shape[:-2])):  # ndindex returns index iterator of each image
-                    print(idx, data[idx].shape)
-                    write_image(data[idx], template % (im+1))
+                    print(im_file % (im+1), idx, data[idx].shape)
+                    write_image(data[idx], im_file % (im+1))
 
     # --- Scan length ---
     scan_length = len(next(iter(scandata.values()))) if scandata else 0

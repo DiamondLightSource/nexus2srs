@@ -50,4 +50,5 @@ easy and fast to search.
  - No unexpected failures were found in these, however none of the files conform to the new, ideal nexus structure.
  - Local files are converted in ~0.3s per file without image conversion.
  - See Jupyter notebook [nexus2srs_tests.ipynb](https://github.com/DanPorter/nexus2srs/blob/master/nexus2srs_tests.ipynb) for more information.
+ - Tested with nxs2dat jupyter processor on I16 15/12/2023, updated TIF file writing.
 
