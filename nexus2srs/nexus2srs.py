@@ -1,25 +1,6 @@
 """
 Python module with functions to load HDF files and write classic SRS .dat files
 
-Usage (Python)
->> from nexus2srs import nxs2dat
->> nxs2dat('12345.nxs', '12345.dat')
-
-Usage (from terminal - converts scan files from NeXus to ASCII format):
-$ python nexus2srs 12345.nxs 12345.dat
-
-The file conversion follows the following protocol:
-    0. Open .nxs HDF file (using h5py) and create list of all datasets and groups
-    1. Search all datasets for one called "scan_fields"
-    1.1 Use names from "scan_fields" to populate scandata, matching dataset names or dataset.attr['gda_field_name']
-    2. If "scan_fields" not available, look for "measurement" group and add arrays to scandata
-    3. If "measurement" not available, determine scan shape from most common dataset shapes with size > 1
-    3.1 Add all unique datasets with shape matching scan_shape to scandata
-    4. Add all datasets with size=1 to metadata
-    5. search for datasets 'scan_command', 'start_time', 'scan_header' to complete the file header
-    6. search for dataset 'image_data' and add metadata field '%s_path_template' where %s is the detector name
-    7. search for NXdetector/data dataset, if required write TIF images from area detector data
-
 By Dan Porter, PhD
 Diamond Light Source Ltd.
 2023
@@ -27,12 +8,15 @@ Diamond Light Source Ltd.
 
 import os
 import datetime
-import h5py
-from collections import Counter
-from numpy import squeeze, reshape, ndindex
+import re
 
-__version__ = "0.5.2"
-__date__ = "2023/12/15"
+import h5py
+import numpy as np
+from numpy import ndindex
+import hdfmap
+
+__version__ = "0.6.0"
+__date__ = "2024/08/24"
 
 # --- Default HDF Names ---
 NXSCANFIELDS = 'scan_fields'
@@ -45,7 +29,7 @@ NXDATE = 'start_time'
 NXIMAGE = 'image_data'
 NXDETECTOR = 'NXdetector'
 NXDATA = 'data'
-NXATTR = 'gda_field_name'  # dataset attribute name
+NXATTR = 'local_name'  # 'gda_field_name'  # dataset attribute name
 
 PATH_TEMPLATE = '%05d.tif'
 DATE_FORMAT = "%Y-%m-%dT%H:%M:%S.%f%z"
@@ -56,68 +40,7 @@ HEADER = """ &SRS
  SRSCN1='        ',SRSCN2='        ',SRSCN3='        ',"""  # % (srsrun, srsdat, srstim)
 
 
-def address_name(address):
-    """Convert hdf address to name"""
-    return os.path.basename(address)
-
-
-def filename2name(filename):
-    """Convert filename to run number"""
-    return os.path.splitext(os.path.basename(filename))[0]
-
-
-def dataset2metadata(dataset):
-    """Convert hdf dataset to either float or string"""
-    try:
-        # numpy.squeeze converts any len(1) arrays to floats
-        return float(squeeze(dataset))
-    except ValueError:
-        return "'%s'" % dataset[()]
-
-
-def dataset2scandata(dataset):
-    """Convert hdf dataset to 1D array"""
-    return reshape(dataset, -1)
-
-
-def get_datasets_groups(hdf):
-    """
-    Return list of datasets and groups in HDF object
-    :param hdf: HDF file object from h5py.File
-    :return datasets: list (address, dataset) for each dataset in HDF, address is str
-    :return groups: list (address, group, nx_class) for each group in HDF, address & nx_class are str
-    """
-    datasets = []
-    groups = []
-
-    def func(address, obj):
-        if isinstance(obj, h5py.Group):
-            # NX_class attribute usually returns bytes, decode to str or get AttributeError if str
-            try:
-                nx_class = obj.attrs['NX_class'].decode() if 'NX_class' in obj.attrs else ''
-            except AttributeError:
-                nx_class = obj.attrs['NX_class']
-            except OSError:
-                nx_class = ''  # if object doesn't have attribute (i16 scan)
-            groups.append((address, obj, nx_class))
-        elif isinstance(obj, h5py.Dataset):
-            # handle situation where dataset value is stored in named collection e.g. /before_scan/s1x/value
-            if address.endswith('/value'):
-                address = address[:-6]
-            datasets.append((address, obj))
-    hdf.visititems(func)
-    return datasets, groups
-
-
-def search_address_datasets(name, address_datasets, default=None):
-    """Search list of HDF (address, dataset) for field name, return address or default"""
-    search = [adr for adr, ds in address_datasets if address_name(adr) == name]
-    if search:
-        return search[0]
-    return default
-
-
-def write_image(image, filename):
+def write_image(image: np.ndarray, filename: str):
     """Write 2D array to TIFF image file"""
     if os.path.isfile(filename):
         return
@@ -127,143 +50,156 @@ def write_image(image, filename):
     print('Written image to %s' % filename)
 
 
-def get_hdf_data(hdf):
+def nexus_scan_number(hdf_file: h5py.File, hdf_map: hdfmap.HdfMap) -> int:
     """
-    Create dicts of metadata and scan data from hdf file. Metadata are size 1 values, scandata are 1D arrays
-
-    Follows the following protocol:
-        1. Search all datasets for one called "scan_fields"
-        1.1 Use names from "scan_fields" to populate scandata, matching dataset names or dataset.attr['gda_field_name']
-        2. If "scan_fields" not available, look for "measurement" group and add arrays to scandata
-        3. If "measurement" not available, determine scan shape from most common dataset shapes with size > 1
-        3.1 Add all unique datasets with shape matching scan_shape to scandata
-        4. Add all datasets with size=1 to metadata
-        5. search for datasets 'scan_command', 'start_time', 'scan_header' to complete the file header
-        6. search for dataset 'image_data' and add metadata field '%s_path_template' where %s is the detector name
-        7. search for NXdetector/data dataset and return address
-
-    Note: In python>=3.6, the {} dict preseverves the key order,
-          so the order of scandata will match how it was generated
-
-    :param hdf: HDF Group object
-    :return scandata: {name: array} dict of scanned data, all fields have n length arrays
-    :return metadata: {name: value} dict of metadata, all fields are float/int/str
-    :return header: str of header data to add to dat file
-    :return data_address: list of str hdf addresses for each detector image array
+    Generate scan number from file, use entry_identifier or generate file filename
+    :param hdf_file: h5py.File object
+    :param hdf_map: HdfMap object
+    :return: int
     """
+    if NXRUN in hdf_map:
+        print(f"Scan number from {NXRUN}")
+        return int(hdf_map.get_data(hdf_file, NXRUN))
+    name = os.path.splitext(os.path.basename(hdf_file.filename))[0]
+    numbers = re.findall(r'\d{4,}', name)
+    if numbers:
+        return int(numbers[0])
+    return 0
 
-    # Find HDF addresses
-    address_datasets, address_groups = get_datasets_groups(hdf)  # [(hdf_address, hdf_dataset)]
-    # searching the list of addresses is much faster than searching the hdf file
-    scan_fields_address = search_address_datasets(NXSCANFIELDS, address_datasets)
-    scan_header_address = search_address_datasets(NXSCANHEADER, address_datasets)
-    scan_id_address = search_address_datasets(NXRUN, address_datasets)
-    scan_cmd_address = search_address_datasets(NXCMD, address_datasets)
-    scan_time_address = search_address_datasets(NXDATE, address_datasets)
-    scan_image_address = search_address_datasets(NXIMAGE, address_datasets)
-    # search group list
-    measurement_groups = [grp for adr, grp, _ in address_groups if address_name(adr) == NXMEASUREMENT and len(grp) > 0]
-    # location of 3D detector image data
-    data_address = [adr + '/' + NXDATA for adr, grp, cls in address_groups if cls == NXDETECTOR and NXDATA in grp]
 
-    # find scan data
-    ids = []
-    metadata = {}
-    scandata = {}
-    if scan_fields_address:
-        print('NXclassic_scan - uses arrays in scan_fields')
-        scan_fields = hdf[scan_fields_address][()]
-        print('scan_fields: ' + ', '.join(scan_fields))
-        scan_datasets = [(adr, ds) for adr, ds in address_datasets if ds.size > 1]  # select arrays
-        scan_names = [address_name(adr) for adr, ds in scan_datasets]
-        scan_gda_names = [ds.attrs[NXATTR] if NXATTR in ds.attrs else '' for adr, ds in scan_datasets]
-        for scan_field in scan_fields:
-            if scan_field in scan_names:
-                adr, ds = scan_datasets[scan_names.index(scan_field)]  # returns first instance
-            elif scan_field in scan_gda_names:
-                adr, ds = scan_datasets[scan_names.index(scan_field)]
-            else:
-                print('Scan field %s not available' % scan_field)
-                continue
-            ids.append(ds.id)
-            scandata[scan_field] = dataset2scandata(ds)
-        scan_shape = None  # skip over finding additional arrays below
-    elif measurement_groups:
-        print('NXmeasurement - uses arrays in measurement group')
-        measurement = measurement_groups[0]  # HDF Group object
-        scandata = {
-            name: dataset2scandata(ds)
-            for name, ds in measurement.items() if ds.ndim < 3
-        }
-        scan_shape = None  # skip over finding additional arrays below
+def nexus_date(hdf_file: h5py.File, hdf_map: hdfmap.HdfMap) -> datetime.datetime:
+    """
+    Generate date of file, using either start_time or file creation date
+    :param hdf_file: h5py.File object
+    :param hdf_map: HdfMap object
+    :return: datetime object
+    """
+    if NXDATE in hdf_map:
+        date = hdf_map.get_data(hdf_file, NXDATE)
+        if isinstance(date, datetime.datetime):
+            return date
+    print(f"'{NXDATE}' not available or note datetime, using file creation time")
+    return datetime.datetime.fromtimestamp(os.path.getctime(hdf_file.filename))
+
+
+def nexus_header(hdf_file: h5py.File, hdf_map: hdfmap.HdfMap) -> str:
+    """
+    Generate header from nexus file
+    :param hdf_file: h5py.File object
+    :param hdf_map: HdfMap object
+    :return: str
+    """
+    if NXSCANHEADER in hdf_map:
+        return '\n'.join(h for h in hdf_map.get_data(hdf_file, NXSCANHEADER))
     else:
-        print('Generic_scan - scan field names not preserved. Search for scan_shape')
-        # Find datasets with ndim 1 or 2 and size > 1
-        scan_shapes = [ds.shape for _, ds in address_datasets if (ds.ndim == 1 or ds.ndim == 2) and ds.size > 1]
-        if len(scan_shapes) == 0:
-            # Catch situation of no array data
-            print('Warning: File contains no scan data (no arrays greater than length 1)')
-            scan_shape = None
-        else:
-            scan_shape, counts = Counter(scan_shapes).most_common(1)[0]
-            print('Scan shape: ' + str(scan_shape))
-
-    # --- Load Data ---
-    # Loop through each dataset, comparing ids to not replicate data
-    #  if dataset is size==1, add to metadata
-    #  if dataset is shape==scan_shape array, add to scandata
-    for address, dataset in address_datasets:
-        if dataset.id in ids:
-            continue
-        ids.append(dataset.id)
-        name = address_name(address)
-
-        # --- Metadata ---
-        if dataset.size == 1:
-            metadata[name] = dataset2metadata(dataset)
-
-        # ---Scandata ---
-        elif scan_shape and dataset.shape == scan_shape:
-            try:
-                # Only add floats, reshape to 1D array
-                scandata[name] = reshape(dataset, -1) * 1.0
-            except TypeError:
-                pass
-
-    # --- Find Required metadata ---
-    try:
-        date = datetime.datetime.strptime(hdf[scan_time_address][()], DATE_FORMAT)
-    except (KeyError, ValueError, TypeError):
-        date = datetime.datetime.fromtimestamp(os.path.getctime(hdf.filename))
-
-    req_meta = {
-        'cmd': dataset2metadata(hdf[scan_cmd_address]) if scan_cmd_address else '',
-        'date': date.strftime("'%a %b %d %H:%M:%S %Y'"),
-    }
-    # Image data path
-    if scan_image_address:
-        # Get image path, e.g. '815893-pilatus3_100k-files
-        image_data = reshape(hdf[scan_image_address], -1).astype(str)
-        image_path, _ = os.path.split(image_data[0])
-        # Get detector name from path
-        try:
-            detector_name = image_path.split('-')[1]
-        except IndexError:
-            detector_name = 'image'
-        req_meta[detector_name + '_path_template'] = "'%s/%s'" % (image_path, PATH_TEMPLATE)
-
-    req_meta.update(**metadata)
-
-    # --- generate header ---
-    # 1. Check NXclassic_scan header
-    if scan_header_address:
-        header = '\n'.join(h for h in hdf[scan_header_address])
-    else:
-        srsrun = '%s' % hdf[scan_id_address][()] if scan_id_address else filename2name(hdf.filename)
+        date = nexus_date(hdf_file, hdf_map)
+        srsrun = nexus_scan_number(hdf_file, hdf_map)
         srsdat = date.strftime('%Y%m%d')
         srstim = date.strftime('%H%M%S')
-        header = HEADER % (srsrun, srsdat, srstim)
-    return scandata, req_meta, header, data_address
+        return HEADER % (srsrun, srsdat, srstim)
+
+
+def nexus_detectors(hdf_file: h5py.File, hdf_map: hdfmap.HdfMap) -> (dict, dict):
+    """
+    Generate detector paths from nexus file
+    :param hdf_file: h5py.File object
+    :param hdf_map: HdfMap object
+    :return: metadata, detector_image_paths
+    :return: {'detector_path_template': 'image_path_template'}, {'detector_name': (path, template)}
+    """
+    metadata = {}
+    detector_image_paths = {}
+    srsrun = nexus_scan_number(hdf_file, hdf_map)
+    # Check for 'image_data' field (these files should exist already)
+    if NXIMAGE in hdf_map:
+        # image_data is an array of tif image names
+        image_data = hdf_map.get_data(hdf_file, NXIMAGE)
+        # Get image path, e.g. '815893-pilatus3_100k-files
+        image_path = os.path.dirname(image_data[0])
+        template = "%s/%s" % (image_path, PATH_TEMPLATE)
+        # Get detector name from path '0-NAME-files'
+        try:
+            name = image_path.split('-')[1]
+        except IndexError:
+            name = 'detector'
+        metadata[f"{name}_path_template"] = template
+
+    # build image path from detector class names
+    for name, path in hdf_map.image_data.items():
+        template = f"{srsrun}-{name}-files/{PATH_TEMPLATE}"
+        metadata[f"{name}_path_template"] = template
+        detector_image_paths[name] = (path, template)
+    return metadata, detector_image_paths
+
+
+def generate_datafile(hdf_file: h5py.File, hdf_map: hdfmap.HdfMap) -> (str, dict):
+    """
+    General purpose function to retrieve data from HDF files
+    :param hdf_file: h5py.File object
+    :param hdf_map: HdfMap object
+    :return: dat_string, {'detector_name': (path, template)}
+    """
+    # metadata
+    metadata_str = hdf_map.create_metadata_list(hdf_file)
+    # scandata
+    scannables_str = hdf_map.create_scannables_table(hdf_file)
+    # Date
+    date = nexus_date(hdf_file, hdf_map)
+
+    # --- Additional metadata ---
+    req_meta = {
+        'cmd': hdf_map.get_data(hdf_file, NXCMD, default=''),
+        'date': date.strftime("%a %b %d %H:%M:%S %Y"),
+    }
+    # Detectors
+    det_meta, detector_image_paths = nexus_detectors(hdf_file, hdf_map)
+    req_meta.update(det_meta)
+    # generate string
+    required_metadata_str = '\n'.join([f"{name}='{value}'" for name, value in req_meta.items()])
+
+    # --- Header ---
+    header = nexus_header(hdf_file, hdf_map)
+
+    # --- Build String ---
+    out = '\n'.join([
+        header,
+        '<MetaDataAtStart>',
+        required_metadata_str,
+        metadata_str,
+        '</MetaDataAtStart>',
+        ' &END',
+        scannables_str,
+        ''  # blank line at end of file
+    ])
+    return out, detector_image_paths
+
+
+def write_tifs(hdf: h5py.File, save_dir: str, detector_image_paths: dict):
+    """
+    Exctract image frames from detectors and save as tif images
+    :param hdf: h5py.File object
+    :param save_dir: str name of directory to create image folder '{scan}-{detector}-files/'
+    :param detector_image_paths: {'detector_name': ('path', 'template')}
+    :return: None
+    """
+
+    # --- write image data ---
+    for name, (hdf_path, template) in detector_image_paths.items():
+        print(f'Detector images: {name}: {hdf_path}, template: {template}')
+        # Create image folder
+        det_folder = os.path.dirname(template)
+        det_dir = os.path.join(save_dir, det_folder)
+        im_file = os.path.join(save_dir, template)
+        if not os.path.isdir(det_dir):
+            os.makedirs(det_dir)
+            print('Created folder: %s' % det_dir)
+        # Write TIF images
+        data = hdf[hdf_path]
+        # Assume first index is the scan index
+        for im, idx in enumerate(ndindex(data.shape[:-2])):  # ndindex returns index iterator of each image
+            image = data[idx]
+            print(im_file % (im + 1), idx, image.shape)
+            write_image(image, im_file % (im + 1))
 
 
 "----------------------------------------------------------------------------"
@@ -271,7 +207,7 @@ def get_hdf_data(hdf):
 "----------------------------------------------------------------------------"
 
 
-def nxs2dat(nexus_file, dat_file=None, write_tif=False):
+def nxs2dat(nexus_file: str, dat_file: str = None, write_tif: bool = False):
     """
     Load HDF file and convert to classic SRS .dat file
     :param nexus_file: str filename of HDF/Nexus file
@@ -282,78 +218,15 @@ def nxs2dat(nexus_file, dat_file=None, write_tif=False):
     if dat_file is None:
         dat_file = os.path.splitext(nexus_file)[0] + '.dat'
 
+    nxs_map = hdfmap.create_nexus_map(nexus_file)
     print('Nexus File: %s' % nexus_file)
-    with h5py.File(nexus_file, 'r') as hdf:
+    with hdfmap.load_hdf(nexus_file) as hdf:
         # --- get scan data and header data from HDF ---
-        scandata, metadata, header, data_addresses = get_hdf_data(hdf)
+        outstr, detector_image_paths = generate_datafile(hdf, nxs_map)
 
-        # --- write image data ---
+        with open(dat_file, 'wt') as newfile:
+            newfile.write(outstr)
+        print('Written to: %s' % dat_file)
+
         if write_tif:
-            scan_dir = os.path.dirname(dat_file)
-            runno = filename2name(nexus_file)
-            print('image addresses: %s' % data_addresses)
-            for scan_data_address in data_addresses:
-                # Create image name tempate e.g. '879486-pilatus3_100k-files/00063.tif'
-                det_name = scan_data_address.split('/')[-2]  # /entry/detector/data
-                det_folder = '%s-%s-files' % (runno, det_name)
-                template = "%s/%s" % (det_folder, PATH_TEMPLATE)
-                metadata['%s_path_template' % det_name] = "'%s'" % template
-                # Create image folder
-                det_dir = os.path.join(scan_dir, det_folder)
-                im_file = os.path.join(det_dir, PATH_TEMPLATE)
-                os.makedirs(det_dir, exist_ok=True)
-                print('Created folder: %s' % det_dir)
-                # Write TIF images
-                data = hdf[scan_data_address]
-                # Assume first index is the scan index
-                for im, idx in enumerate(ndindex(data.shape[:-2])):  # ndindex returns index iterator of each image
-                    print(im_file % (im+1), idx, data[idx].shape)
-                    write_image(data[idx], im_file % (im+1))
-
-    # --- Scan length ---
-    scan_length = len(next(iter(scandata.values()))) if scandata else 0
-    print('Scan length: %s' % scan_length)
-
-    # --- Metadata ---
-    meta = '\n'.join(['%s=%s' % (name, value) for name, value in metadata.items()])
-    # --- Scandata ---
-    scanhead = '\t'.join(['%10s' % name for name in scandata])
-    scan = '\n'.join(['\t'.join(['%10s' % scandata[name][n] for name in scandata]) for n in range(scan_length)])
-    # --- Combine ---
-    out = '\n'.join([
-        header,
-        '<MetaDataAtStart>',
-        meta,
-        '</MetaDataAtStart>',
-        ' &END',
-        scanhead,
-        scan,
-        ''  # blank line at end of file
-    ])
-    # print('\n---ASCII File---')
-    # print(out)
-    # print('------')
-    with open(dat_file, 'wt') as newfile:
-        newfile.write(out)
-    print('Written to: %s' % dat_file)
-
-
-if __name__ == '__main__':
-    import sys
-    tot = 0
-    for n, arg in enumerate(sys.argv):
-        if arg == '-h' or arg.lower() == '--help':
-            tot += 1
-            print(__doc__)
-        if arg.endswith('.nxs'):
-            tot += 1
-            dat = sys.argv[n + 1] if len(sys.argv) > n + 1 and sys.argv[n + 1].endswith('.dat') else None
-            if '-tif' in sys.argv:
-                nxs2dat(arg, dat, True)
-            else:
-                nxs2dat(arg, dat, False)
-
-    if tot > 1:
-        print('\nCompleted %d conversions' % tot)
-    else:
-        print(__doc__)
+            write_tifs(hdf, os.path.dirname(dat_file), detector_image_paths)

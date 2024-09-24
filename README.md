@@ -42,7 +42,7 @@ easy and fast to search.
 
  - Loss of order information in scan data for generic style
  - Missing scancn commands (loss of original scan command)
- - Many metadata values different in comarisons, possibly saved at different point?
+ - Many metadata values different in comparisons, possibly saved at different point?
 
 ### Testing
 

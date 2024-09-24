@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools >= 61.0", "wheel", "pytest", "numpy", "h5py", "hdf5plugin", "hdfmap", "pillow"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nexus2srs"
+version = "0.5"
+dependencies = [
+  "numpy",
+  "h5py",
+  "hdf5plugin",
+  "hdfmap",
+  "pillow"
+]
+requires-python = ">=3.10"
+authors = [
+  {name = "Dan Porter", email = "dan.porter@diamond.ac.uk"},
+]
+maintainers = [
+  {name = "Dan Porter", email = "dan.porter@diamond.ac.uk"},
+]
+description = "Lightweight function to convert Nexus (.nxs) scan Files to the classic ascii SRS .dat files."
+readme = "README.md"
+license = {file = "LICENSE"}
+keywords = [
+  'nexus',
+]
+classifiers = [
+  'Programming Language :: Python :: 3.10',
+  'Intended Audience :: Science/Research',
+  'Topic :: Scientific/Engineering :: Physics',
+  'License :: OSI Approved :: Apache Software License',
+  'Development Status :: 3 - Alpha',
+]
+
+[project.urls]
+Homepage = "https://github.com/DiamondLightSource/nexus2srs"
+Documentation = "https://github.com/DiamondLightSource/nexus2srs"
+Repository = "https://github.com/DiamondLightSource/nexus2srs"
+"Bug Tracker" = "https://github.com/DiamondLightSource/nexus2srs"
+Changelog = "https://github.com/DiamondLightSource/nexus2srs/blob/master/README.md"
+
+
+[tool.pytest.ini_options]
+pythonpath = [
+  ".",
+]

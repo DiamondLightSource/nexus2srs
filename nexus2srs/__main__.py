@@ -1,5 +1,5 @@
 """
-
+command line arguments
 """
 if __name__ == '__main__':
 
@@ -15,10 +15,14 @@ if __name__ == '__main__':
         if arg.endswith('.nxs'):
             tot += 1
             dat = sys.argv[n + 1] if len(sys.argv) > n + 1 and sys.argv[n + 1].endswith('.dat') else None
-            nxs2dat(arg, dat)
+            if '-tif' in sys.argv:
+                nxs2dat(arg, dat, True)
+            else:
+                nxs2dat(arg, dat, False)
 
     if tot > 1:
         print('\nCompleted %d conversions' % tot)
     else:
         import nexus2srs
         help(nexus2srs)
+

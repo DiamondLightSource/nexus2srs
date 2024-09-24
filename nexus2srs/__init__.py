@@ -7,11 +7,12 @@ Usage (in python):
 >> nxs2dat('12345.nxs', '12345.dat')
 
 Usage (from terminal):
-$ python -m nexus2srs 12345.nxs 12345.dat
+$ python nexus2srs 12345.nxs 12345.dat
+Include '-tif' in arguments to save detector images as tif images.
 
 By Dan Porter, PhD
 Diamond Light Source Ltd.
-2023
+2024
 """
 
 from nexus2srs.nexus2srs import nxs2dat, __date__, __version__
@@ -31,6 +32,8 @@ def module_info():
     out += '\n     numpy version: %s' % numpy.__version__
     import h5py
     out += '\n      h5py version: %s' % h5py.__version__
+    import hdfmap
+    out += '\n    hdfmap version: %s' % hdfmap.__version__
     import os
     out += '\nRunning in directory: %s\n' % os.path.abspath('.')
     return out
