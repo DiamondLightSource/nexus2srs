@@ -16,7 +16,7 @@ from numpy import ndindex
 import hdfmap
 
 __version__ = "0.6.0"
-__date__ = "2024/08/24"
+__date__ = "2024/09/25"
 
 # --- Default HDF Names ---
 NXSCANFIELDS = 'scan_fields'
@@ -109,7 +109,6 @@ def nexus_detectors(hdf_file: h5py.File, hdf_map: hdfmap.HdfMap) -> (dict, dict)
     """
     metadata = {}
     detector_image_paths = {}
-    srsrun = nexus_scan_number(hdf_file, hdf_map)
     # Check for 'image_data' field (these files should exist already)
     if NXIMAGE in hdf_map:
         # image_data is an array of tif image names
@@ -125,8 +124,9 @@ def nexus_detectors(hdf_file: h5py.File, hdf_map: hdfmap.HdfMap) -> (dict, dict)
         metadata[f"{name}_path_template"] = template
 
     # build image path from detector class names
+    filename, ext = os.path.splitext(os.path.basename(hdf_file.filename))
     for name, path in hdf_map.image_data.items():
-        template = f"{srsrun}-{name}-files/{PATH_TEMPLATE}"
+        template = f"{filename}-{name}-files/{PATH_TEMPLATE}"
         metadata[f"{name}_path_template"] = template
         detector_image_paths[name] = (path, template)
     return metadata, detector_image_paths

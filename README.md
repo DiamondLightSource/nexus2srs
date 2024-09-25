@@ -2,13 +2,13 @@
 Lightweight function to convert Nexus (.nxs) scan Files to the classic ascii SRS .dat files.
 
 
-By Dan Porter, *Diamond Light Source Ltd.* 2023
+By Dan Porter, *Diamond Light Source Ltd.* 2024
 
 
 ### Usage
 From Terminal:
 ```
-$ python -m nexus2srs '12345.nxs' '12345.dat'
+$ python -m nexus2srs '12345.nxs' '12345.dat' -tif
 ```
 
 In Python script:
@@ -19,7 +19,8 @@ nxs2dat('12345.nxs')
 ```
 
 ### Requirements
-*h5py*, *numpy*, plus *pillow* for writing TIF images
+**python 3.10+**,
+*hdfmap*, *h5py*, *numpy*, plus *pillow* for writing TIF images
 
 
 ### Methodology
@@ -46,9 +47,15 @@ easy and fast to search.
 
 ### Testing
 
- - Testing has beenb performed on several thousand old I16, I10 and I21 nexus files.
+ - Testing has been performed on several thousand old I16, I10 and I21 nexus files.
  - No unexpected failures were found in these, however none of the files conform to the new, ideal nexus structure.
  - Local files are converted in ~0.3s per file without image conversion.
  - See Jupyter notebook [nexus2srs_tests.ipynb](https://github.com/DanPorter/nexus2srs/blob/master/nexus2srs_tests.ipynb) for more information.
  - Tested with nxs2dat jupyter processor on I16 15/12/2023, updated TIF file writing.
+
+### Update September 2024
+
+Significant re-factoring of code to include the [hdfmap](https://github.com/DiamondLightSource/hdfmap) package.
+The HdfMap function takes care of creating the scannables table and the metadata, using current NeXus best practice.
+This allows for correct identification of metadata and uses "local_names" and "decimals" attributes.
 
