@@ -16,7 +16,7 @@ from numpy import ndindex
 import hdfmap
 
 __version__ = "0.6.0"
-__date__ = "2024/09/25"
+__date__ = "2024/09/26"
 
 # --- Default HDF Names ---
 NXSCANFIELDS = 'scan_fields'

@@ -7,7 +7,7 @@
 cmd='scan hkl [0.97, 0.022, 0.112] [0.97, 0.022, 0.132] [0, 0, 0.001] MapperProc pil3_100k 1'
 date='Tue Feb 27 16:25:38 2024'
 pil3_100k_path_template='1040323-pil3_100k-files/%05d.tif'
-filepath='C:\Users\grp66007\OneDrive - Diamond Light Source Ltd\PythonProjects\nexus2srs\tests\data/1040323.nxs'
+filepath='/scratch/grp66007/python/nexus2srs/tests/data/1040323.nxs'
 filename='1040323.nxs'
 ppchi=-45.73929
 pppiezo1=0.0
