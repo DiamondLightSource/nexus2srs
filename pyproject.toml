@@ -40,6 +40,10 @@ Repository = "https://github.com/DiamondLightSource/nexus2srs"
 "Bug Tracker" = "https://github.com/DiamondLightSource/nexus2srs"
 Changelog = "https://github.com/DiamondLightSource/nexus2srs/blob/master/README.md"
 
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["nexus2srs"]
+namespaces = true
 
 [tool.pytest.ini_options]
 pythonpath = [

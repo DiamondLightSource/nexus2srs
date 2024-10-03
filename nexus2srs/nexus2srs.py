@@ -57,13 +57,11 @@ def set_logging_level(level: str | int):
     :param level: str level name or int level
     :return: None
     """
-    try:
+    if isinstance(level, str):
         level = level.upper()
         # level = logging.getLevelNamesMapping()[level]  # Python >3.11
         level = logging._nameToLevel[level]
-    except AttributeError:
-        level = int(level)
-    logger.setLevel(level)
+    logger.setLevel(int(level))
     logger.info(f"Logging level set to {level}")
 
 
@@ -216,7 +214,7 @@ def generate_datafile(hdf_file: h5py.File, hdf_map: hdfmap.HdfMap) -> (str, dict
 
 def write_tiffs(hdf: h5py.File, save_dir: str, detector_image_paths: dict):
     """
-    Extract image frames from detectors and save as tif images
+    Extract image frames from detectors and save as TIFF images
     :param hdf: h5py.File object
     :param save_dir: str name of directory to create image folder '{scan}-{detector}-files/'
     :param detector_image_paths: {'detector_name': ('path', 'template')}
