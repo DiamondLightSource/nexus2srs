@@ -8,7 +8,7 @@ By Dan Porter, *Diamond Light Source Ltd.* 2023-2024
 ### Usage
 From Terminal:
 ```
-$ python -m nexus2srs '12345.nxs' '12345.dat' -tif
+$ python -m nexus2srs '12345.nxs' '12345.dat' -tiff
 ```
 
 In Python script:
