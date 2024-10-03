@@ -1,0 +1,600 @@
+*** Top Groups ***
+Groups:
+ NXentry:  /entry1
+   definition,end_time,entry_identifier,features,program_name,scan_command,scan_dimensions,scan_identifier,start_time,title,title_old
+ NXinstrument:  /entry1/instrument
+   name
+ NXdata:  /entry1/pil3_100k
+   TimeFromEpoch,TimeSec,count_time,delta,gamma,ic1monitor,kappa,maxval,maxx,maxy,mu,offsetdelta,path,phi,rc,sum,theta,x
+ NXsample:  /entry1/sample
+   depends_on,name,ub_matrix,unit_cell
+ NXcollection:  /entry1/test
+   x
+ NXuser:  /entry1/user01
+   username
+
+
+
+########################################################################################################
+*** Full Tree ***
+/
+/entry1
+  @NX_class: b'NXentry'
+/entry1/before_scan
+  @NX_class: b'NXcollection'
+/entry1/before_scan/PPR
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/PPR/ppchi: -50.753
+  /entry1/before_scan/PPR/pppiezo1: 0
+  /entry1/before_scan/PPR/pppiezo2: 12345
+  /entry1/before_scan/PPR/ppth1: -8.9731
+  /entry1/before_scan/PPR/ppth2: 0.00090867
+  /entry1/before_scan/PPR/ppz1: 15.5
+  /entry1/before_scan/PPR/ppz2: 10
+/entry1/before_scan/Ta
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/Ta/Ta: 295.48
+/entry1/before_scan/Tb
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/Tb/Tb: 295.9
+/entry1/before_scan/Tc
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/Tc/Tc: 0
+/entry1/before_scan/Tchannel
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/Tchannel/Tchannel: 1
+/entry1/before_scan/Td
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/Td/Td: 0
+/entry1/before_scan/Tsample
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/Tsample/Tsample: 295.48
+/entry1/before_scan/alpha
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/alpha/alpha: -74.113
+/entry1/before_scan/beamline_slits
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/beamline_slits/s1xcentre: -0.008
+  /entry1/before_scan/beamline_slits/s1xgap: 1
+  /entry1/before_scan/beamline_slits/s1ycentre: -0.079
+  /entry1/before_scan/beamline_slits/s1ygap: 0.896
+  /entry1/before_scan/beamline_slits/s2xcentre: -0.085725
+  /entry1/before_scan/beamline_slits/s2xgap: 19.999
+  /entry1/before_scan/beamline_slits/s2ycentre: 0.308
+  /entry1/before_scan/beamline_slits/s2ygap: 20
+  /entry1/before_scan/beamline_slits/s3xcentre: -4.1055
+  /entry1/before_scan/beamline_slits/s3xgap: 41.082
+  /entry1/before_scan/beamline_slits/s3ycentre: 0.3495
+  /entry1/before_scan/beamline_slits/s3ygap: 20.006
+  /entry1/before_scan/beamline_slits/s4xcentre: -6.499
+  /entry1/before_scan/beamline_slits/s4xgap: 38.998
+  /entry1/before_scan/beamline_slits/s4ycentre: 0
+  /entry1/before_scan/beamline_slits/s4ygap: 28.006
+  /entry1/before_scan/beamline_slits/shtr3x: 11.53
+  /entry1/before_scan/beamline_slits/shtr3y: 4.305
+/entry1/before_scan/beta
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/beta/beta: 69.023
+/entry1/before_scan/delta_offset
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/delta_offset/delta_offset: 0
+/entry1/before_scan/dettrans
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/dettrans/dettrans: 0
+/entry1/before_scan/diffractometer_sample
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/diffractometer_sample/azih: 1
+  /entry1/before_scan/diffractometer_sample/azik: 0
+  /entry1/before_scan/diffractometer_sample/azil: 0
+  /entry1/before_scan/diffractometer_sample/beta: -1e+07
+  /entry1/before_scan/diffractometer_sample/chi: 90
+  /entry1/before_scan/diffractometer_sample/delta: 16.209
+  /entry1/before_scan/diffractometer_sample/delta_axis_offset: 0
+  /entry1/before_scan/diffractometer_sample/en: 6.97
+  /entry1/before_scan/diffractometer_sample/eta: -0.045165
+  /entry1/before_scan/diffractometer_sample/gam: -0.00051747
+  /entry1/before_scan/diffractometer_sample/h: -0.075861
+  /entry1/before_scan/diffractometer_sample/k: 0.67199
+  /entry1/before_scan/diffractometer_sample/kphi: 53.731
+  /entry1/before_scan/diffractometer_sample/l: 0.047724
+  /entry1/before_scan/diffractometer_sample/mu: 1.4169e-05
+  /entry1/before_scan/diffractometer_sample/phi: -3.314
+/entry1/before_scan/dummypd
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/dummypd/x: 2
+  /entry1/before_scan/dummypd/y: 0
+  /entry1/before_scan/dummypd/z: 0
+/entry1/before_scan/gains_atten
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/gains_atten/Atten: 10
+  /entry1/before_scan/gains_atten/Transmission: 0.16068
+  /entry1/before_scan/gains_atten/diode_gain: 0
+  /entry1/before_scan/gains_atten/ic1_gain: 3
+  /entry1/before_scan/gains_atten/ic2_gain: 4
+/entry1/before_scan/jjslits
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/jjslits/s5xgap: 0.5001
+  /entry1/before_scan/jjslits/s5xtrans: -5e-05
+  /entry1/before_scan/jjslits/s5ygap: 0.5002
+  /entry1/before_scan/jjslits/s5ytrans: 0
+  /entry1/before_scan/jjslits/s6xgap: 5.2129
+  /entry1/before_scan/jjslits/s6xtrans: -0.0972
+  /entry1/before_scan/jjslits/s6ygap: -1.9374
+  /entry1/before_scan/jjslits/s6ytrans: -0.0024
+/entry1/before_scan/lakeshore
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/lakeshore/Ta: 300.03
+  /entry1/before_scan/lakeshore/Tb: 297.84
+  /entry1/before_scan/lakeshore/Tc: 3.15
+  /entry1/before_scan/lakeshore/Td: 3.15
+  /entry1/before_scan/lakeshore/Tset: 300
+/entry1/before_scan/mirrors
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/mirrors/m1piezo: 0
+  /entry1/before_scan/mirrors/m1pitch: 3.756
+  /entry1/before_scan/mirrors/m1roll: 0.107
+  /entry1/before_scan/mirrors/m1x: 1.001
+  /entry1/before_scan/mirrors/m1y: -1.923
+  /entry1/before_scan/mirrors/m1yaw: 0.403
+  /entry1/before_scan/mirrors/m2bender: 295
+  /entry1/before_scan/mirrors/m2pitch: 3.756
+  /entry1/before_scan/mirrors/m2roll: 0.066
+  /entry1/before_scan/mirrors/m2x: 14
+  /entry1/before_scan/mirrors/m2y: 2.103
+  /entry1/before_scan/mirrors/m2yaw: -0.04
+  /entry1/before_scan/mirrors/m3pitch: -3.4e-05
+  /entry1/before_scan/mirrors/m3x: -3.3091
+  /entry1/before_scan/mirrors/m4pitch: 1.68e-05
+  /entry1/before_scan/mirrors/m4x: 4.0005
+/entry1/before_scan/mono
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/mono/T1dcmSi111: 295.32
+  /entry1/before_scan/mono/T2dcmSi111: 11.697
+  /entry1/before_scan/mono/bragg: -16.207
+  /entry1/before_scan/mono/dcmfinepitch: 0
+  /entry1/before_scan/mono/dcmlat: -40.938
+  /entry1/before_scan/mono/dcmpitch: -21.157
+  /entry1/before_scan/mono/dcmroll1: 19.952
+  /entry1/before_scan/mono/dcmroll2: 18.714
+  /entry1/before_scan/mono/en: 6.97
+  /entry1/before_scan/mono/perp: 40.541
+/entry1/before_scan/mrwolf
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/mrwolf/Day: 11
+  /entry1/before_scan/mrwolf/Hours: 17
+  /entry1/before_scan/mrwolf/Minutes: 3
+  /entry1/before_scan/mrwolf/Month: 1
+  /entry1/before_scan/mrwolf/Seconds: 41
+  /entry1/before_scan/mrwolf/Year: 2023
+/entry1/before_scan/mtthp
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/mtthp/mtthp: -88.047
+/entry1/before_scan/offsets
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/offsets/base_z_offset: -13.481
+  /entry1/before_scan/offsets/idgap_offset: 0.53887
+  /entry1/before_scan/offsets/m1y_offset: -15.367
+  /entry1/before_scan/offsets/m2_coating_offset: 11
+  /entry1/before_scan/offsets/m2y_offset: -22.341
+  /entry1/before_scan/offsets/ztable_offset: -19.994
+/entry1/before_scan/p2
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/p2/p2rot: 297.9
+  /entry1/before_scan/p2/p2x1: 34.964
+  /entry1/before_scan/p2/p2y1: 343.67
+  /entry1/before_scan/p2/p2zbot: 5e-06
+  /entry1/before_scan/p2/p2ztop: -260.5
+/entry1/before_scan/pa
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/pa/stokes: 0.00026
+  /entry1/before_scan/pa/thp: -44.139
+  /entry1/before_scan/pa/tthp: -112.11
+  /entry1/before_scan/pa/zp: -7.313
+/entry1/before_scan/pil3_centre_i
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/pil3_centre_i/pil3_centre_i: 239
+/entry1/before_scan/pil3_centre_j
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/pil3_centre_j/pil3_centre_j: 106
+/entry1/before_scan/positions
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/positions/Base_z: -0.037319
+  /entry1/before_scan/positions/Base_z1: -0.037319
+  /entry1/before_scan/positions/Base_z2: -0.037298
+  /entry1/before_scan/positions/Base_z3: -0.037316
+  /entry1/before_scan/positions/base_y: 20.79
+  /entry1/before_scan/positions/spara: 1.3246
+  /entry1/before_scan/positions/sperp: 0.23266
+  /entry1/before_scan/positions/sx: 1.3358
+  /entry1/before_scan/positions/sy: 0.1557
+  /entry1/before_scan/positions/sz: 13.046
+  /entry1/before_scan/positions/table_horiz: 21.131
+  /entry1/before_scan/positions/table_vert: -6.5508
+/entry1/before_scan/ppchi
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/ppchi/ppchi: -50.753
+/entry1/before_scan/ppchitemp
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/ppchitemp/ppchitemp: 24.6
+/entry1/before_scan/pppitch
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/pppitch/pppitch: 0.0293
+/entry1/before_scan/ppth1
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/ppth1/ppth1: -8.9731
+/entry1/before_scan/ppth1temp
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/ppth1temp/ppth1temp: 24.5
+/entry1/before_scan/ppth2
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/ppth2/ppth2: 0.00090867
+/entry1/before_scan/ppth2temp
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/ppth2temp/ppth2temp: 24.9
+/entry1/before_scan/ppx
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/ppx/ppx: 9.1477
+/entry1/before_scan/ppy
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/ppy/ppy: -7.5458
+/entry1/before_scan/ppyaw
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/ppyaw/ppyaw: -0.027
+/entry1/before_scan/ppz1
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/ppz1/ppz1: 15.5
+/entry1/before_scan/ppz1temp
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/ppz1temp/ppz1temp: 24.2
+/entry1/before_scan/ppz2
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/ppz2/ppz2: 10
+/entry1/before_scan/ppz2temp
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/ppz2temp/ppz2temp: 24.5
+/entry1/before_scan/psi
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/psi/psi: -15.914
+/entry1/before_scan/s7xgap
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/s7xgap/s7xgap: 15.066
+/entry1/before_scan/s7xtrans
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/s7xtrans/s7xtrans: -0.0087
+/entry1/before_scan/s7ygap
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/s7ygap/s7ygap: 20.048
+/entry1/before_scan/s7ytrans
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/s7ytrans/s7ytrans: -0.0009
+/entry1/before_scan/source
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/source/Uharmonic: 5
+  /entry1/before_scan/source/idgap: 29
+  /entry1/before_scan/source/rc: 0.14619
+/entry1/before_scan/tcontrol
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/tcontrol/Tcontrol_device: Lakeshore 336
+  /entry1/before_scan/tcontrol/Tcontrol_id: 0
+/entry1/before_scan/tset
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/tset/Tset: 300
+/entry1/before_scan/ubMeta
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/ubMeta/value: {"name": "GdSbTe_longsample_hfield", "crystal": "[u'GdSbTe', 'Orthorhombic', 4.306, 4.268, 9.095, 90.0, 90.0, 90.0]", "reflist": {"1": {"tag": "indexing not sure", "hkl": "[3.0, 0.0, 1.0]", "pos": "[0.002, 74.795, 0.0, 35.92, 80.737, -20.0]", "energy": 7.245, "time": "2022-09-15T13:34:38.331"}, "2": {"tag": "?", "hkl": "[1.0, 3.0, 1.0]", "pos": "[0.0, 79.384, 0.0, 56.098, 80.892, -19.0]", "energy": 7.245, "time": "2022-09-15T15:34:35.62"}, "3": {"tag": "??", "hkl": "[0.0, 4.0, 0.0]", "pos": "[0.0, 106.197, 0.0, 51.478, 89.818, -20.0]", "energy": 7.245, "time": "2022-09-15T15:35:5.658"}, "4": {"tag": "None", "hkl": "[4.0, 1.0, 1.0]", "pos": "[0.0, 112.015, 0.0, 68.287, 83.317, -20.0]", "energy": 7.245, "time": "2022-09-15T14:27:43.339"}, "5": {"tag": "??notclose", "hkl": "[2.0, 2.0, 1.0]", "pos": "[0.0, 71.437, 0.0, 15.31, 58.319, -20.0]", "energy": 7.245, "time": "2022-09-15T14:57:14.733"}, "6": {"tag": "None", "hkl": "[2.0, 2.0, 2.0]", "pos": "[0.0, 72.764, 0.0, 66.842, 53.34, 3.411e-13]", "energy": 7.245, "time": "2022-09-15T15:09:59.639"}, "7": {"tag": "6Khorizonmag", "hkl": "[0.0, 4.0, 0.0]", "pos": "[0.0, 106.621, 0.0, 51.807, 89.547, -20.0]", "energy": 7.245, "time": "2022-09-15T18:16:56.646"}, "8": {"tag": "6K", "hkl": "[1.0, 3.0, 1.0]", "pos": "[0.0, 79.644, 0.0, 56.356, 80.753, -19.0]", "energy": 7.245, "time": "2022-09-15T18:22:23.318"}, "9": {"tag": "dom1?", "hkl": "[0.0, 3.0, 1.0]", "pos": "[0.0, 75.036, 0.0, 36.01, 80.734, -19.0]", "energy": 7.245, "time": "2022-09-15T18:33:22.718"}, "10": {"tag": "dom2?", "hkl": "[0.0, 3.0, 1.0]", "pos": "[0.0, 73.969, 0.0, 36.16, 80.607, -19.0]", "energy": 7.245, "time": "2022-09-15T18:34:36.674"}, "11": {"tag": "6K, foundusingref8and9(dom1)", "hkl": "[2.0, 2.0, 2.0]", "pos": "[0.0, 73.024, 0.0, 66.992, 53.126, 3.979e-13]", "energy": 7.245, "time": "2022-09-15T18:43:50.193"}, "12": {"tag": "APD", "hkl": "[0.002, 1.999, 0.002]", "pos": "[0.0, 47.238, 0.0, 22.159, 89.579, -20.0]", "energy": 7.245, "time": "2022-09-15T21:47:53.629"}, "13": {"tag": "APD", "hkl": "[0.002, 1.999, 0.002]", "pos": "[0.0, 47.238, 0.0, 22.152, 89.578, -20.0]", "energy": 7.245, "time": "2022-09-15T21:57:40.73"}, "14": {"tag": "APD", "hkl": "[0.004, 2.998, 1.006]", "pos": "[0.0, 74.949, 0.0, 36.172, 80.648, -20.0]", "energy": 7.245, "time": "2022-09-15T22:04:40.719"}, "15": {"tag": "APD", "hkl": "[1.001, 2.998, 0.999]", "pos": "[0.0, 79.586, 0.0, 56.509, 81.054, -20.0]", "energy": 7.245, "time": "2022-09-15T22:11:33.594"}, "16": {"tag": "5.6K horiz", "hkl": "[0.0, 2.0, 0.0]", "pos": "[22.192, 0.0, 47.291, 1.647e-12, -0.344, -20.0]", "energy": 7.245, "time": "2022-09-16T10:02:44.674"}, "17": {"tag": "5.6K horiz", "hkl": "[-1.0, 3.0, 0.0]", "pos": "[19.6, 0.0, 78.612, 1.456e-12, -0.633, -20.0]", "energy": 7.245, "time": "2022-09-16T10:09:24.707"}, "18": {"tag": "None", "hkl": "[0.037, 3.367, -1.003]", "pos": "[42.029, 0.0, 85.943, 1.005e-12, 7.624, -20.0]", "energy": 7.245, "time": "2022-09-19T00:02:38.49"}, "19": {"tag": "realigned", "hkl": "[0.0, 3.0, -1.0]", "pos": "[35.917, 0.0, 75.004, -1.001e-12, 8.591, -20.0]", "energy": 7.245, "time": "2022-09-19T12:27:26.106"}, "20": {"tag": "None", "hkl": "[0.405, 3.0, -1.0]", "pos": "[43.847, 0.0, 75.781, -8.971e-13, 8.666, -20.0]", "energy": 7.245, "time": "2022-09-19T13:46:34.195"}, "21": {"tag": "None", "hkl": "[0.0, 2.0, -1.0]", "pos": "[22.698, 0.0, 48.641, 6.04e-14, 12.865, -20.0]", "energy": 7.245, "time": "2022-09-19T14:05:50.276"}, "22": {"tag": "None", "hkl": "[0.3702, 2.001, -1.0]", "pos": "[33.249, 0.0, 49.481, -4.921e-13, 12.956, -20.0]", "energy": 7.245, "time": "2022-09-19T15:10:9.959"}}, "orientlist": {}, "tau": 0, "sigma": 0, "reference": {"n_hkl_configured": "[1.0, 0.0, 0.0]", "n_phi_configured": null}, "surface": {"n_hkl_configured": null, "n_phi_configured": "[0.0, 0.0, 1.0]"}, "u": null, "ub": null, "or0": 16, "or1": 17}
+/entry1/before_scan/xtlinfo
+  @NX_class: b'NXcollection'
+  /entry1/before_scan/xtlinfo/UB11: 0.47826
+  /entry1/before_scan/xtlinfo/UB12: -0.004462
+  /entry1/before_scan/xtlinfo/UB13: 0.65269
+  /entry1/before_scan/xtlinfo/UB21: 1.3781
+  /entry1/before_scan/xtlinfo/UB22: -0.038108
+  /entry1/before_scan/xtlinfo/UB23: -0.22641
+  /entry1/before_scan/xtlinfo/UB31: 0.037136
+  /entry1/before_scan/xtlinfo/UB32: 1.4716
+  /entry1/before_scan/xtlinfo/UB33: -0.0038841
+  /entry1/before_scan/xtlinfo/UB_ref1: 16
+  /entry1/before_scan/xtlinfo/UB_ref2: 17
+  /entry1/before_scan/xtlinfo/a: 4.306
+  /entry1/before_scan/xtlinfo/alpha1: 90
+  /entry1/before_scan/xtlinfo/alpha2: 90
+  /entry1/before_scan/xtlinfo/alpha3: 90
+  /entry1/before_scan/xtlinfo/b: 4.2682
+  /entry1/before_scan/xtlinfo/c: 9.0948
+  /entry1/before_scan/xtlinfo/crystal_name: GdSbTe_longsample_hfield
+  /entry1/before_scan/xtlinfo/crystal_symmetry: Orthorhombic
+  /entry1/definition: NXmx
+  /entry1/end_time: 2023-01-11T17:03:47.220Z
+  /entry1/entry_identifier: 970792
+  /entry1/features: (3,) max:    6, min: -4.5396e+18, mean: -1.5132e+18
+/entry1/instrument
+  @NX_class: b'NXinstrument'
+/entry1/instrument/atime
+  @NX_class: b'NXpositioner'
+  /entry1/instrument/atime/TimeSec: (5,) max: 4790.4, min: 4784.7, mean: 4787.6
+    @local_name: b'atime.TimeSec'
+    @target: b'/entry1/instrument/atime/TimeSec'
+/entry1/instrument/atimetwo
+  @NX_class: b'NXpositioner'
+  /entry1/instrument/atimetwo/TimeFromEpoch: (5,) max: 1.6735e+09, min: 1.6735e+09, mean: 1.6735e+09
+    @local_name: b'atimetwo.TimeFromEpoch'
+    @target: b'/entry1/instrument/atimetwo/TimeFromEpoch'
+/entry1/instrument/attenuator
+  @NX_class: b'NXattenuator'
+  /entry1/instrument/attenuator/attenuator_transmission: 0.16068
+/entry1/instrument/ic1monitor
+  @NX_class: b'NXpositioner'
+  /entry1/instrument/ic1monitor/ic1monitor: (5,) max: 0.64415, min: 0.58004, mean: 0.61545
+    @local_name: b'ic1monitor.ic1monitor'
+    @target: b'/entry1/instrument/ic1monitor/ic1monitor'
+  /entry1/instrument/name: i16
+/entry1/instrument/pil3_100k
+  @NX_class: b'NXdetector'
+  /entry1/instrument/pil3_100k/calibration_date: 2022-07-15 10:54:08
+  /entry1/instrument/pil3_100k/calibration_scan_number: 9.4225e+05
+  /entry1/instrument/pil3_100k/count_time: (5,) max:    1, min:    1, mean:    1
+    @local_name: b'pil3_100k.count_time'
+    @target: b'/entry1/instrument/pil3_100k/count_time'
+  /entry1/instrument/pil3_100k/depends_on: /entry1/instrument/pil3_100k/transformations/origin_offset
+  /entry1/instrument/pil3_100k/description: DetectorBase
+  /entry1/instrument/pil3_100k/id: detectorbase-1
+  /entry1/instrument/pil3_100k/image_data: (5,) [970792-pilatus3_100k-files/00001.tif, ..., 970792-pilatus3_100k-files/00005.tif]
+    @data_filename: [1]
+    @signal: [1]
+  /entry1/instrument/pil3_100k/maxval: (5,) max:    1, min:    0, mean:  0.4
+    @local_name: b'pil3_100k.maxval'
+    @target: b'/entry1/instrument/pil3_100k/maxval'
+  /entry1/instrument/pil3_100k/maxx: (5,) max:  377, min:    0, mean: 142.2
+    @local_name: b'pil3_100k.maxx'
+    @target: b'/entry1/instrument/pil3_100k/maxx'
+  /entry1/instrument/pil3_100k/maxy: (5,) max:  163, min:    0, mean: 33.2
+    @local_name: b'pil3_100k.maxy'
+    @target: b'/entry1/instrument/pil3_100k/maxy'
+/entry1/instrument/pil3_100k/module
+  @NX_class: b'NXdetector_module'
+  /entry1/instrument/pil3_100k/module/data_origin: (2,) max:    0, min:    0, mean:    0
+  /entry1/instrument/pil3_100k/module/data_size: (2,) max:  487, min:  195, mean:  341
+  /entry1/instrument/pil3_100k/module/fast_pixel_direction: 0.172
+    @depends_on: b'/entry1/instrument/pil3_100k/module/module_offset'
+    @offset: [0. 0. 0.]
+    @transformation_type: b'translation'
+    @units: b'mm'
+    @vector: [ 0.7063757   0.00183285 -0.70783474]
+  /entry1/instrument/pil3_100k/module/module_offset: 0
+    @depends_on: b'/entry1/instrument/pil3_100k/transformations/origin_offset'
+    @offset: [0. 0. 0.]
+    @transformation_type: b'translation'
+    @units: b'mm'
+    @vector: [0. 0. 0.]
+  /entry1/instrument/pil3_100k/module/slow_pixel_direction: 0.172
+    @depends_on: b'/entry1/instrument/pil3_100k/module/module_offset'
+    @offset: [0. 0. 0.]
+    @transformation_type: b'translation'
+    @units: b'mm'
+    @vector: [4.41563000e-04 9.99995312e-01 3.03000900e-03]
+  /entry1/instrument/pil3_100k/path: (5,) max:    5, min:    1, mean:    3
+    @local_name: b'pil3_100k.path'
+    @target: b'/entry1/instrument/pil3_100k/path'
+  /entry1/instrument/pil3_100k/saturation_value: 1e+06
+  /entry1/instrument/pil3_100k/sensor_material: Silicon
+  /entry1/instrument/pil3_100k/sensor_thickness: 0.32
+  /entry1/instrument/pil3_100k/sum: (5,) max:  -21, min:  -22, mean: -21.6
+    @local_name: b'pil3_100k.sum'
+    @target: b'/entry1/instrument/pil3_100k/sum'
+/entry1/instrument/pil3_100k/transformations
+  @NX_class: b'NXtransformations'
+  /entry1/instrument/pil3_100k/transformations/origin_offset: 1
+    @depends_on: b'/entry1/instrument/transformations/offsetdelta'
+    @offset: [0. 0. 0.]
+    @offset_units: b'mm'
+    @transformation_type: b'translation'
+    @units: b'mm'
+    @vector: [ 62.58314655 -18.31388151 621.14621608]
+  /entry1/instrument/pil3_100k/type: DetectorBase
+/entry1/instrument/rc
+  @NX_class: b'NXpositioner'
+  /entry1/instrument/rc/rc: (5,) max: 0.15365, min: 0.14681, mean: 0.14924
+    @axis: b'1'
+    @label: b'1'
+    @local_name: b'rc.rc'
+    @primary: b'1'
+    @target: b'/entry1/instrument/rc/rc'
+/entry1/instrument/source
+  @NX_class: b'NXsource'
+  /entry1/instrument/source/current: 0.1462
+    @units: b'mA'
+  /entry1/instrument/source/energy: -4.6843e-05
+    @units: b'GeV'
+  /entry1/instrument/source/name: DLS
+  /entry1/instrument/source/probe: x-ray
+  /entry1/instrument/source/type: Synchrotron X-Ray Source
+/entry1/instrument/transformations
+  @NX_class: b'NXtransformations'
+  /entry1/instrument/transformations/delta: (5,) max: 16.47, min: 5.1225, mean: 10.867
+    @axis: b'1'
+    @depends_on: b'entry1/instrument/transformations/gamma'
+    @local_name: b'kdelta.kdelta'
+    @target: b'/entry1/instrument/transformations/delta'
+    @transformation_type: b'rotation'
+    @units: b'deg'
+    @vector: [0. 1. 0.]
+  /entry1/instrument/transformations/gamma: (5,) max: -0.00051747, min: -0.0007072, mean: -0.00062727
+    @axis: b'1'
+    @depends_on: b'.'
+    @local_name: b'kgam.kgam'
+    @target: b'/entry1/instrument/transformations/gamma'
+    @transformation_type: b'rotation'
+    @units: b'deg'
+    @vector: [1. 0. 0.]
+  /entry1/instrument/transformations/offsetdelta: (5,) max:    0, min:    0, mean:    0
+    @axis: b'1'
+    @depends_on: b'entry1/instrument/transformations/delta'
+    @local_name: b'delta_axis_offset.delta_axis_offset'
+    @target: b'/entry1/instrument/transformations/offsetdelta'
+    @transformation_type: b'rotation'
+    @units: b'deg'
+    @vector: [ 0. -1.  0.]
+/entry1/measurement
+  @NX_class: b'NXdata'
+/entry1/pil3_100k
+  @NX_class: b'NXdata'
+  /entry1/pil3_100k/TimeFromEpoch: (5,) max: 1.6735e+09, min: 1.6735e+09, mean: 1.6735e+09
+    @local_name: b'atimetwo.TimeFromEpoch'
+    @target: b'/entry1/instrument/atimetwo/TimeFromEpoch'
+  /entry1/pil3_100k/TimeSec: (5,) max: 4790.4, min: 4784.7, mean: 4787.6
+    @local_name: b'atime.TimeSec'
+    @target: b'/entry1/instrument/atime/TimeSec'
+  /entry1/pil3_100k/count_time: (5,) max:    1, min:    1, mean:    1
+    @local_name: b'pil3_100k.count_time'
+    @target: b'/entry1/instrument/pil3_100k/count_time'
+  /entry1/pil3_100k/delta: (5,) max: 16.47, min: 5.1225, mean: 10.867
+    @axis: b'1'
+    @depends_on: b'entry1/instrument/transformations/gamma'
+    @local_name: b'kdelta.kdelta'
+    @target: b'/entry1/instrument/transformations/delta'
+    @transformation_type: b'rotation'
+    @units: b'deg'
+    @vector: [0. 1. 0.]
+  /entry1/pil3_100k/gamma: (5,) max: -0.00051747, min: -0.0007072, mean: -0.00062727
+    @axis: b'1'
+    @depends_on: b'.'
+    @local_name: b'kgam.kgam'
+    @target: b'/entry1/instrument/transformations/gamma'
+    @transformation_type: b'rotation'
+    @units: b'deg'
+    @vector: [1. 0. 0.]
+  /entry1/pil3_100k/ic1monitor: (5,) max: 0.64415, min: 0.58004, mean: 0.61545
+    @local_name: b'ic1monitor.ic1monitor'
+    @target: b'/entry1/instrument/ic1monitor/ic1monitor'
+  /entry1/pil3_100k/kappa: (5,) max: -134.76, min: -134.76, mean: -134.76
+    @axis: b'1'
+    @depends_on: b'entry1/sample/transformations/theta'
+    @local_name: b'kap.kap'
+    @target: b'/entry1/sample/transformations/kappa'
+    @transformation_type: b'rotation'
+    @units: b'deg'
+    @vector: [ 0.          0.64278761 -0.76604443]
+  /entry1/pil3_100k/maxval: (5,) max:    1, min:    0, mean:  0.4
+    @local_name: b'pil3_100k.maxval'
+    @target: b'/entry1/instrument/pil3_100k/maxval'
+  /entry1/pil3_100k/maxx: (5,) max:  377, min:    0, mean: 142.2
+    @local_name: b'pil3_100k.maxx'
+    @target: b'/entry1/instrument/pil3_100k/maxx'
+  /entry1/pil3_100k/maxy: (5,) max:  163, min:    0, mean: 33.2
+    @local_name: b'pil3_100k.maxy'
+    @target: b'/entry1/instrument/pil3_100k/maxy'
+  /entry1/pil3_100k/mu: (5,) max: 6.0952e-06, min: -1.9782e-06, mean: 2.8658e-06
+    @axis: b'1'
+    @depends_on: b'.'
+    @local_name: b'kmu.kmu'
+    @target: b'/entry1/sample/transformations/mu'
+    @transformation_type: b'rotation'
+    @units: b'deg'
+    @vector: [1. 0. 0.]
+  /entry1/pil3_100k/offsetdelta: (5,) max:    0, min:    0, mean:    0
+    @axis: b'1'
+    @depends_on: b'entry1/instrument/transformations/delta'
+    @local_name: b'delta_axis_offset.delta_axis_offset'
+    @target: b'/entry1/instrument/transformations/offsetdelta'
+    @transformation_type: b'rotation'
+    @units: b'deg'
+    @vector: [ 0. -1.  0.]
+  /entry1/pil3_100k/path: (5,) max:    5, min:    1, mean:    3
+    @local_name: b'pil3_100k.path'
+    @target: b'/entry1/instrument/pil3_100k/path'
+  /entry1/pil3_100k/phi: (5,) max: 53.731, min: 53.731, mean: 53.731
+    @axis: b'1'
+    @depends_on: b'entry1/sample/transformations/kappa'
+    @local_name: b'kphi.kphi'
+    @target: b'/entry1/sample/transformations/phi'
+    @transformation_type: b'rotation'
+    @units: b'deg'
+    @vector: [0. 1. 0.]
+  /entry1/pil3_100k/rc: (5,) max: 0.15365, min: 0.14681, mean: 0.14924
+    @axis: b'1'
+    @label: b'1'
+    @local_name: b'rc.rc'
+    @primary: b'1'
+    @target: b'/entry1/instrument/rc/rc'
+  /entry1/pil3_100k/sum: (5,) max:  -21, min:  -22, mean: -21.6
+    @local_name: b'pil3_100k.sum'
+    @target: b'/entry1/instrument/pil3_100k/sum'
+  /entry1/pil3_100k/theta: (5,) max:   57, min:   57, mean:   57
+    @axis: b'1'
+    @depends_on: b'entry1/sample/transformations/mu'
+    @local_name: b'kth.kth'
+    @target: b'/entry1/sample/transformations/theta'
+    @transformation_type: b'rotation'
+    @units: b'deg'
+    @vector: [0. 1. 0.]
+  /entry1/pil3_100k/x: (5,) max:    5, min:    1, mean:    3
+    @axis: b'1'
+    @local_name: b'x.x'
+    @primary: 1
+    @target: b'/entry1/test/x'
+  /entry1/program_name: GDA 9.28.0
+/entry1/sample
+  @NX_class: b'NXsample'
+/entry1/sample/beam
+  @NX_class: b'NXbeam'
+  /entry1/sample/beam/incident_energy: 6.97
+    @axis: b'1'
+    @local_name: b'en.en'
+  /entry1/sample/beam/incident_wavelength: 0.17788
+    @units: b'nm'
+  /entry1/sample/depends_on: /entry1/sample/transformations/phi
+  /entry1/sample/name: Default Sample
+/entry1/sample/transformations
+  @NX_class: b'NXtransformations'
+  /entry1/sample/transformations/kappa: (5,) max: -134.76, min: -134.76, mean: -134.76
+    @axis: b'1'
+    @depends_on: b'entry1/sample/transformations/theta'
+    @local_name: b'kap.kap'
+    @target: b'/entry1/sample/transformations/kappa'
+    @transformation_type: b'rotation'
+    @units: b'deg'
+    @vector: [ 0.          0.64278761 -0.76604443]
+  /entry1/sample/transformations/mu: (5,) max: 6.0952e-06, min: -1.9782e-06, mean: 2.8658e-06
+    @axis: b'1'
+    @depends_on: b'.'
+    @local_name: b'kmu.kmu'
+    @target: b'/entry1/sample/transformations/mu'
+    @transformation_type: b'rotation'
+    @units: b'deg'
+    @vector: [1. 0. 0.]
+  /entry1/sample/transformations/phi: (5,) max: 53.731, min: 53.731, mean: 53.731
+    @axis: b'1'
+    @depends_on: b'entry1/sample/transformations/kappa'
+    @local_name: b'kphi.kphi'
+    @target: b'/entry1/sample/transformations/phi'
+    @transformation_type: b'rotation'
+    @units: b'deg'
+    @vector: [0. 1. 0.]
+  /entry1/sample/transformations/theta: (5,) max:   57, min:   57, mean:   57
+    @axis: b'1'
+    @depends_on: b'entry1/sample/transformations/mu'
+    @local_name: b'kth.kth'
+    @target: b'/entry1/sample/transformations/theta'
+    @transformation_type: b'rotation'
+    @units: b'deg'
+    @vector: [0. 1. 0.]
+  /entry1/sample/ub_matrix: (1, 3, 3) max: 0.21933, min: -0.23421, mean: 0.013001
+  /entry1/sample/unit_cell: (1, 6) max:   90, min: 4.2682, mean: 47.945
+    @angle_units: b'deg'
+    @length_units: b'angstrom'
+  /entry1/scan_command: scan x 1 5 1 kdelta pil3_100k 1
+  /entry1/scan_dimensions: 5
+  /entry1/scan_identifier: 9eb910cb-391d-400a-a569-44c023584504
+  /entry1/start_time: 2023-01-11T17:03:39.390Z
+/entry1/test
+  @NX_class: b'NXcollection'
+  /entry1/test/x: (5,) max:    5, min:    1, mean:    3
+    @axis: b'1'
+    @local_name: b'x.x'
+    @primary: 1
+    @target: b'/entry1/test/x'
+  /entry1/title: scan x 1 5 1 kdelta pil3_100k 1
+  /entry1/title_old: Scan of sample with GDA
+/entry1/user01
+  @NX_class: b'NXuser'
+  /entry1/user01/username: i16user
