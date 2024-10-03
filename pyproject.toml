@@ -47,4 +47,4 @@ pythonpath = [
 ]
 
 [project.scripts]
-nexus2srs = "nexus2srs:cli:cli_nexus2srs"
+nexus2srs = "nexus2srs.cli:cli_nexus2srs"
