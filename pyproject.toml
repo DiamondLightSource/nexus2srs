@@ -19,7 +19,7 @@ authors = [
 maintainers = [
   {name = "Dan Porter", email = "dan.porter@diamond.ac.uk"},
 ]
-description = "Lightweight function to convert Nexus (.nxs) scan Files to the classic ascii SRS .dat files."
+description = "Program to convert NeXus (.nxs) scan Files to the classic ASCII SRS .dat files."
 readme = "README.md"
 license = {file = "LICENSE"}
 keywords = [
@@ -45,3 +45,6 @@ Changelog = "https://github.com/DiamondLightSource/nexus2srs/blob/master/README.
 pythonpath = [
   ".",
 ]
+
+[project.scripts]
+nexus2srs = "nexus2srs:cli:cli_nexus2srs"

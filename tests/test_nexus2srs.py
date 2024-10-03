@@ -1,7 +1,9 @@
 import pytest
 import os
 import shutil
-from nexus2srs import nxs2dat
+from nexus2srs import nxs2dat, set_logging_level
+
+set_logging_level('info')
 
 DATA_FOLDER = os.path.join(os.path.dirname(__file__), 'data')
 FILE_NEW_NEXUS = DATA_FOLDER + '/1040323.nxs'  # new nexus format

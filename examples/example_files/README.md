@@ -1,12 +1,12 @@
 # Example Nexus and SRS Files
 
 ## File Types
-| Filename   | Description                                 |
-|------------|---------------------------------------------|
-| *.dat      | SRS file in ASCII format                    |
-| *.nxs      | NeXus file in HDF format                    |
-| #_new.dat  | Converted files using nxs2dat               |
-| #_tree.txt | Printout of tree structure of NeXus file    |
+| Filename   | Description                              |
+|------------|------------------------------------------|
+| *.dat      | SRS file in ASCII format                 |
+| *.nxs      | NeXus file in HDF format                 |
+| #_new.dat  | Converted files                          |
+| #_tree.txt | Printout of tree structure of NeXus file |
 
 ## Scan numbers
 | Number | Description    | Scan Command                                                                       |

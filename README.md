@@ -1,8 +1,8 @@
 # nexus2srs
-Lightweight function to convert Nexus (.nxs) scan Files to the classic ascii SRS .dat files.
+Program to convert NeXus (.nxs) scan Files to the classic ASCII SRS .dat files.
 
 
-By Dan Porter, *Diamond Light Source Ltd.* 2024
+By Dan Porter, *Diamond Light Source Ltd.* 2023
 
 
 ### Usage
@@ -20,7 +20,7 @@ nxs2dat('12345.nxs')
 
 ### Requirements
 **python 3.10+**,
-*hdfmap*, *h5py*, *numpy*, plus *pillow* for writing TIF images
+*hdfmap*, *h5py*, *numpy*, plus *pillow* for writing TIFF images
 
 
 ### Methodology

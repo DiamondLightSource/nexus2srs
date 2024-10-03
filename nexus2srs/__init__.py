@@ -15,7 +15,12 @@ Diamond Light Source Ltd.
 2024
 """
 
-from nexus2srs.nexus2srs import nxs2dat, __date__, __version__
+from nexus2srs.nexus2srs import __date__, __version__, set_logging_level, nxs2dat
+from nexus2srs.cli import run_nexus2srs
+
+__all__ = [
+    'nxs2dat', 'run_nexus2srs', 'set_logging_level', 'version_info', 'module_info'
+]
 
 
 def version_info():
