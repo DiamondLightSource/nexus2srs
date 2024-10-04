@@ -1,18 +1,18 @@
 """
 nexus2srs
-Lightweight function to convert Nexus (.nxs) scan Files to the classic SRS .dat files.
+Program to convert NeXus (.nxs) scan Files to the classic ASCII SRS .dat files.
 
 Usage (in python):
 >> from nexus2srs import nxs2dat
->> nxs2dat('12345.nxs', '12345.dat')
+>> nxs2dat('12345.nxs', '12345.dat', write_tiff=False)
 
 Usage (from terminal):
-$ python nexus2srs 12345.nxs 12345.dat
-Include '-tif' in arguments to save detector images as tif images.
+$ nexus2srs 12345.nxs 12345.dat
+Include '-tiff' in arguments to save detector images as tif images.
 
 By Dan Porter, PhD
 Diamond Light Source Ltd.
-2024
+2023-2024
 """
 
 from nexus2srs.nexus2srs import __date__, __version__, set_logging_level, nxs2dat

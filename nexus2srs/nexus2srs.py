@@ -17,7 +17,7 @@ from numpy import ndindex
 import hdfmap
 
 __version__ = "0.6.0"
-__date__ = "2024/09/26"
+__date__ = "2024/10/04"
 
 logging.basicConfig()   # setup logging
 logger = logging.getLogger(__name__)  # set level using logger.setLevel(0)
@@ -26,7 +26,6 @@ logger = logging.getLogger(__name__)  # set level using logger.setLevel(0)
 NXSCANFIELDS = 'scan_fields'
 NXSCANHEADER = 'scan_header'
 NXMEASUREMENT = 'measurement'
-NXMETA = 'positioners'
 NXRUN = 'entry_identifier'
 NXCMD = 'scan_command'
 NXDATE = 'start_time'
@@ -262,6 +261,9 @@ def nxs2dat(nexus_file: str, dat_file: str = None, write_tiff: bool = False):
     """
     if dat_file is None:
         dat_file = os.path.splitext(nexus_file)[0] + '.dat'
+    elif os.path.isdir(dat_file):
+        dat_file_name = os.path.splitext(os.path.basename(nexus_file))[0] + '.dat'
+        dat_file = os.path.join(dat_file, dat_file_name)
 
     nxs_map = hdfmap.create_nexus_map(nexus_file)
     logger.info('Nexus File: %s' % nexus_file)
@@ -271,9 +273,6 @@ def nxs2dat(nexus_file: str, dat_file: str = None, write_tiff: bool = False):
 
         if os.path.isfile(dat_file):
             logger.warning(f"File already exists: {dat_file}")
-        elif os.path.isdir(dat_file):
-            dat_file_name = os.path.splitext(os.path.basename(nexus_file))[0] + '.dat'
-            dat_file = os.path.join(dat_file, dat_file_name)
         else:
             with open(dat_file, 'wt') as newfile:
                 newfile.write(outstr)

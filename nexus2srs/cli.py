@@ -3,12 +3,18 @@ Command line program
 """
 
 import sys
-from nexus2srs import nxs2dat
+import os
+from nexus2srs import nxs2dat, set_logging_level
 
 
 def run_nexus2srs(*args):
     """argument runner for nexus2srs"""
     tot = 0
+    if '--info' in args:
+        set_logging_level('info')
+    if '--debug' in args:
+        set_logging_level('debug')
+
     for n, arg in enumerate(args):
         if arg == '-h' or arg.lower() == '--help' or arg == 'man':
             tot += 1
@@ -16,7 +22,9 @@ def run_nexus2srs(*args):
             help(nexus2srs)
         if arg.endswith('.nxs'):
             tot += 1
-            dat = args[n + 1] if len(args) > n + 1 and args[n + 1].endswith('.dat') else None
+            dat = args[n + 1] if len(args) > n + 1 and (
+                    args[n + 1].endswith('.dat') or os.path.isdir(args[n + 1])
+            ) else None
             print(f"\n----- {arg} -----")
             nxs2dat(arg, dat, '-tiff' in args)
     
