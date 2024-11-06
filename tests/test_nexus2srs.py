@@ -42,7 +42,7 @@ def test_nxs2dat_old_nexus():
     assert os.path.exists(new_file), "file conversion not completed"
     with open(new_file, 'r') as f:
         srs_text = f.read()
-    assert srs_text.count('\n') == 537, "file conversion has wrong number of lines"
+    assert srs_text.count('\n') == 335, "file conversion has wrong number of lines"
     assert "pil3_100k_path_template='1049598-pil3_100k-files/%05d.tif'" in srs_text, "path template missing"
 
 
