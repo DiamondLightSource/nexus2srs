@@ -16,8 +16,8 @@ import numpy as np
 from numpy import ndindex
 import hdfmap
 
-__version__ = "1.0.0"
-__date__ = "2024/10/04"
+__version__ = "1.0.1"
+__date__ = "2024/12/11"
 
 logging.basicConfig()   # setup logging
 logger = logging.getLogger(__name__)  # set level using logger.setLevel(0)
@@ -178,7 +178,7 @@ def generate_datafile(hdf_file: h5py.File, hdf_map: hdfmap.HdfMap) -> (str, dict
     # metadata
     metadata_str = hdf_map.create_metadata_list(hdf_file)
     # scandata
-    scannables_str = hdf_map.create_scannables_table(hdf_file)
+    scannables_str = hdf_map.create_scannables_table(hdf_file, delimiter=' ')
     # Date
     date = nexus_date(hdf_file, hdf_map)
 
