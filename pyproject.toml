@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nexus2srs"
-version = "1.0.0"
+dynamic = ['version']
 dependencies = [
   "numpy",
   "h5py",
@@ -39,6 +39,9 @@ Documentation = "https://github.com/DiamondLightSource/nexus2srs"
 Repository = "https://github.com/DiamondLightSource/nexus2srs"
 "Bug Tracker" = "https://github.com/DiamondLightSource/nexus2srs"
 Changelog = "https://github.com/DiamondLightSource/nexus2srs/blob/master/README.md"
+
+[tool.setuptools.dynamic]
+version = {attr = "nexus2srs.__version__"}
 
 [tool.setuptools.packages.find]
 where = ["."]
