@@ -10,6 +10,12 @@ from nexus2srs import nxs2dat, set_logging_level
 
 DAT_SUBFOLDER = 'spool'  # DLS specific
 
+
+def doc():
+    import nexus2srs
+    help(nexus2srs)
+
+
 def default_srs_folder(nexus_folder: str, srs_folder: str | None = None) -> str:
     """Return default folder for converted dat files"""
     if srs_folder is None:
@@ -17,6 +23,7 @@ def default_srs_folder(nexus_folder: str, srs_folder: str | None = None) -> str:
     if not os.path.isdir(srs_folder):
         raise FileNotFoundError(f"Folder doesn't exist: {srs_folder}")
     return srs_folder
+
 
 def synchronise_files(nexus_folder, srs_folder=None, write_tiff=False, seconds_since_modified=300):
     """Synchronise converted files between folders"""
@@ -72,9 +79,8 @@ def run_nexus2srs(*args):
         run_nexus2srs('/path/file.nxs', '-tiff') -> converts single file with TIFF generation
         run_nexus2srs('/path', '-tiff') -> converts all files in /path to dat files in /path/spool
     """
-    if len(args) == 0 | any(arg.lower() in ['-h', '--help', 'man'] for arg in args):
-        import nexus2srs
-        help(nexus2srs)
+    if any(arg.lower() in ['-h', '--help', 'man'] for arg in args):
+        doc()
         return
     if '--info' in args:
         set_logging_level('info')
