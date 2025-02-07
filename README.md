@@ -2,7 +2,7 @@
 Program to convert NeXus (.nxs) scan Files to the classic ASCII SRS .dat files.
 
 
-By Dan Porter, *Diamond Light Source Ltd.* 2023-2024
+By Dan Porter, *Diamond Light Source Ltd.* 2023-2025
 
 
 ### Usage

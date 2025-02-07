@@ -4,22 +4,87 @@ Command line program
 
 import sys
 import os
+from time import sleep, ctime, time
+from hdfmap import list_files
 from nexus2srs import nxs2dat, set_logging_level
+
+DAT_SUBFOLDER = 'spool'  # DLS specific
+
+def default_srs_folder(nexus_folder: str, srs_folder: str | None = None) -> str:
+    """Return default folder for converted dat files"""
+    if srs_folder is None:
+        srs_folder = os.path.join(nexus_folder, DAT_SUBFOLDER)
+    if not os.path.isdir(srs_folder):
+        raise FileNotFoundError(f"Folder doesn't exist: {srs_folder}")
+    return srs_folder
+
+def synchronise_files(nexus_folder, srs_folder=None, write_tiff=False, seconds_since_modified=300):
+    """Synchronise converted files between folders"""
+    srs_folder = default_srs_folder(nexus_folder, srs_folder)
+    nexus_files = list_files(nexus_folder)
+    dat_files = list_files(srs_folder)
+    conversions = 0
+    for nxs_file in nexus_files:
+        # check if file is still being written
+        if os.path.getmtime(nxs_file) > time() - seconds_since_modified:
+            # print(f"Ignoring '{nxs_file}' as modified too recently")
+            continue
+        dat_file = os.path.join(srs_folder, os.path.basename(nxs_file)[:-4] + '.dat')
+        if dat_file in dat_files:
+            continue
+        nxs2dat(nxs_file, dat_file, write_tiff)
+        conversions += 1
+    return conversions
+
+
+def continuous_sync(nexus_folder, srs_folder=None, write_tiff=False, pol_seconds=300):
+    """Continuously monitor folders and synchronise nexus and dat files"""
+    srs_folder = default_srs_folder(nexus_folder, srs_folder)
+    print("Starting continuous sync of:")
+    print(f"     Nexus files in: {nexus_folder}")
+    print(f"    to Dat files in: {srs_folder}")
+    print(f"Checking folders every {pol_seconds}s")
+    while True:
+        conversions = synchronise_files(nexus_folder, srs_folder, write_tiff, seconds_since_modified=pol_seconds)
+        print(f"{ctime()}  converted {conversions} scans. Press Ctrl+C to exit.")
+        sleep(pol_seconds)
 
 
 def run_nexus2srs(*args):
-    """argument runner for nexus2srs"""
-    tot = 0
+    """
+    argument runner for nexus2srs
+
+        run_nexus2srs(*arguments)
+
+    Arguments
+        file.nxs    Convert file.nxs to file.dat
+        file.nxs newfile.dat    Convert file.nxs to newfile.dat
+        /folder     convert all folder/*.nxs files to folder/spool/*.dat
+        /folder /new    convert all folder/*.nxs files to new/*.dat
+        -tiff       Convert detector files to TIFF images
+        -sync       Continuously synchronise folders
+        -h, --help  Display documentation
+        --info      Set logging level to INFO
+        --debug     Set logging level to DEBUG
+        --quiet     Turn off logging (except errors)
+
+    Examples
+        run_nexus2srs('/path/file.nxs', '-tiff') -> converts single file with TIFF generation
+        run_nexus2srs('/path', '-tiff') -> converts all files in /path to dat files in /path/spool
+    """
+    if len(args) == 0 | any(arg.lower() in ['-h', '--help', 'man'] for arg in args):
+        import nexus2srs
+        help(nexus2srs)
+        return
     if '--info' in args:
         set_logging_level('info')
     if '--debug' in args:
         set_logging_level('debug')
+    if '--error' in args or '--quiet' in args:
+        set_logging_level('error')
 
+    tot = 0
     for n, arg in enumerate(args):
-        if arg == '-h' or arg.lower() == '--help' or arg == 'man':
-            tot += 1
-            import nexus2srs
-            help(nexus2srs)
         if arg.endswith('.nxs'):
             tot += 1
             dat = args[n + 1] if len(args) > n + 1 and (
@@ -27,12 +92,14 @@ def run_nexus2srs(*args):
             ) else None
             print(f"\n----- {arg} -----")
             nxs2dat(arg, dat, '-tiff' in args)
+        elif os.path.isdir(arg):
+            srs_folder = args[n + 1] if len(args) > n + 1 and os.path.isdir(args[n + 1]) else None
+            if '-sync' in args:
+                continuous_sync(arg, srs_folder, '-tiff' in args)
+            else:
+                tot = synchronise_files(arg, srs_folder, '-tiff' in args)
     
-    if tot > 0:
-        print('\nCompleted %d conversions' % tot)
-    else:
-        import nexus2srs
-        help(nexus2srs)
+    print('\nCompleted %d conversions' % tot)
 
 
 def cli_nexus2srs():

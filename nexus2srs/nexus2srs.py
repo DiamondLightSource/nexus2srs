@@ -3,7 +3,7 @@ Python module with functions to load HDF files and write classic SRS .dat files
 
 By Dan Porter, PhD
 Diamond Light Source Ltd.
-2023
+2023-2025
 """
 
 import os
@@ -16,8 +16,8 @@ import numpy as np
 from numpy import ndindex
 import hdfmap
 
-__version__ = "1.0.1"
-__date__ = "2024/12/11"
+__version__ = "1.0.2"
+__date__ = "2025/02/07"
 
 logging.basicConfig()   # setup logging
 logger = logging.getLogger(__name__)  # set level using logger.setLevel(0)

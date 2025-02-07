@@ -10,9 +10,12 @@ Usage (from terminal):
 $ nexus2srs 12345.nxs 12345.dat
 Include '-tiff' in arguments to save detector images as tif images.
 
+Continuous synchronisation of files (batch job):
+$ nexus2srs /path/to/nxs_files /path/to/dat_files
+
 By Dan Porter, PhD
 Diamond Light Source Ltd.
-2023-2024
+2023-2025
 """
 
 from nexus2srs.nexus2srs import __date__, __version__, set_logging_level, nxs2dat
