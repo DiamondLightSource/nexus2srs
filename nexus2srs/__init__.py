@@ -10,8 +10,23 @@ Usage (from terminal):
 $ nexus2srs 12345.nxs 12345.dat
 Include '-tiff' in arguments to save detector images as tif images.
 
-Continuous synchronisation of files (batch job):
+Single synchronisation of files (batch job):
 $ nexus2srs /path/to/nxs_files /path/to/dat_files
+
+Continuous synchronisation of files (starts a continuous process):
+$ nexus2srs /path/to/nxs_files /path/to/dat_files -sync
+
+Arguments
+        file.nxs    Convert file.nxs to file.dat
+        file.nxs newfile.dat    Convert file.nxs to newfile.dat
+        /folder     convert all folder/*.nxs files to folder/spool/*.dat
+        /folder /new    convert all folder/*.nxs files to new/*.dat
+        -tiff       Convert detector files to TIFF images
+        -sync       Continuously synchronise folders
+        -h, --help  Display documentation
+        --info      Set logging level to INFO
+        --debug     Set logging level to DEBUG
+        --quiet     Turn off logging (except errors)
 
 By Dan Porter, PhD
 Diamond Light Source Ltd.

@@ -1,6 +1,7 @@
 import pytest
 import os
 import shutil
+import subprocess
 from nexus2srs import run_nexus2srs, set_logging_level
 
 
@@ -15,9 +16,12 @@ set_logging_level('info')
 def test_run_nexus2srs():
     # Make folder /test
     os.makedirs(NEW_FOLDER, exist_ok=True)
-    command = f"python -m nexus2srs {FILE_NEW_NEXUS} {NEW_FOLDER} -tiff"
+    command = f"python -m nexus2srs \"{FILE_NEW_NEXUS}\" \"{NEW_FOLDER}\" -tiff"
+    print('Running command:')
     print(command)
-    run_nexus2srs(*command.split())
+    output = subprocess.run(command, shell=True, capture_output=True)
+    print('\nOutput:')
+    print(output.stdout.decode())
 
     assert os.path.exists(NEW_FOLDER + '/1040323.dat'), "file conversion not completed"
     assert os.path.exists(NEW_FOLDER + '/1040323-pil3_100k-files/00021.tif'), "TIFF file writing incomplete"
@@ -28,8 +32,12 @@ def test_run_nexus2srs():
 def test_synchronise():
     # Make folder /test
     os.makedirs(SPOOL_FOLDER, exist_ok=True)
-    command = f"python -m nexus2srs {DATA_FOLDER}"
+    command = f"python -m nexus2srs \"{DATA_FOLDER}\""
+    print('Running command:')
     print(command)
+    output = subprocess.run(command, shell=True, capture_output=True)
+    print('\nOutput:')
+    print(output.stdout.decode())
     run_nexus2srs(*command.split())
 
     nexus_files = [file for file in os.listdir(DATA_FOLDER) if file.endswith('.nxs')]

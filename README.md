@@ -18,6 +18,14 @@ from nexus2srs import nxs2dat
 nxs2dat('12345.nxs', '/spool', write_tiff=False)
 ```
 
+At Diamond Light Source:
+```bash
+$ module load nexus2srs
+(python 3.12) $ cd /dls/i##/data/20##/mm####-1
+(python 3.12) $ nexus2srs . spool/ -sync
+```
+In a Linux Terminal, this starts a continuous syncronisation process.
+
 ### Requirements
 **python 3.10+**,
 *hdfmap*, *h5py*, *numpy*, plus *pillow* for writing TIFF images
@@ -51,6 +59,38 @@ table of scanned data. By default, a NeXus file at *'folder/file.nxs' will be sa
 If TIFF writing is enabled, detector image data from 3+D arrays in all **NXdetector** groups will be saved as TIFF 
 images into a sub-folder like *'folder/****RunNo***_***DetectorName****_files/00001.tif'*. Files will not be overwritten if 
 they already exist.
+
+### Command line arguments
+Usage (from terminal):
+```bash
+$ nexus2srs 12345.nxs 12345.dat
+```
+Include '-tiff' in arguments to save detector images as tif images.
+
+Single synchronisation of files (batch job):
+```bash
+$ nexus2srs /path/to/nxs_files /path/to/dat_files
+```
+
+Continuous synchronisation of files (starts a continuous process):
+```bash
+$ nexus2srs /path/to/nxs_files /path/to/dat_files -sync
+```
+
+Arguments
+
+| example              | description                                            |
+|----------------------|--------------------------------------------------------|
+| file.nxs             | Convert file.nxs to file.dat                           |
+| file.nxs newfile.dat | Convert file.nxs to newfile.dat                        |
+| /folder              | convert all folder/\*.nxs files to folder/spool/\*.dat |
+| /folder /new         | convert all folder/\*.nxs files to new/\*.dat          |
+| -tiff                | Convert detector files to TIFF images                  |
+| -sync                | Continuously synchronise folders                       |
+| -h, --help           | Display documentation                                  |
+| --info               | Set logging level to INFO                              |
+| --debug              | Set logging level to DEBUG                             |
+| --quiet              | Turn off logging (except errors)                       |
 
 ### Testing (Jan 2023)
 

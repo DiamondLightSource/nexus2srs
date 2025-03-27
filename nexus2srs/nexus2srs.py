@@ -16,8 +16,8 @@ import numpy as np
 from numpy import ndindex
 import hdfmap
 
-__version__ = "1.0.2"
-__date__ = "2025/02/07"
+__version__ = "1.0.3"
+__date__ = "2025/03/25"
 
 logging.basicConfig()   # setup logging
 logger = logging.getLogger(__name__)  # set level using logger.setLevel(0)

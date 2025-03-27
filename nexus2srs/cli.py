@@ -79,6 +79,8 @@ def run_nexus2srs(*args):
         run_nexus2srs('/path/file.nxs', '-tiff') -> converts single file with TIFF generation
         run_nexus2srs('/path', '-tiff') -> converts all files in /path to dat files in /path/spool
     """
+    print('args:')
+    print('\n'.join(args))
     if any(arg.lower() in ['-h', '--help', 'man'] for arg in args):
         doc()
         return
@@ -90,6 +92,7 @@ def run_nexus2srs(*args):
         set_logging_level('error')
 
     tot = 0
+    look_for_dir = True
     for n, arg in enumerate(args):
         if arg.endswith('.nxs'):
             tot += 1
@@ -98,12 +101,15 @@ def run_nexus2srs(*args):
             ) else None
             print(f"\n----- {arg} -----")
             nxs2dat(arg, dat, '-tiff' in args)
-        elif os.path.isdir(arg):
+            look_for_dir = False
+        elif look_for_dir and os.path.isdir(arg):
             srs_folder = args[n + 1] if len(args) > n + 1 and os.path.isdir(args[n + 1]) else None
             if '-sync' in args:
                 continuous_sync(arg, srs_folder, '-tiff' in args)
+                break
             else:
                 tot = synchronise_files(arg, srs_folder, '-tiff' in args)
+                break
     
     print('\nCompleted %d conversions' % tot)
 
