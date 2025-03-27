@@ -6,6 +6,7 @@ Diamond Light Source Ltd.
 2023-2025
 """
 
+import sys
 import os
 import datetime
 import re
@@ -58,8 +59,10 @@ def set_logging_level(level: str | int):
     """
     if isinstance(level, str):
         level = level.upper()
-        # level = logging.getLevelNamesMapping()[level]  # Python >3.11
-        level = logging._nameToLevel[level]
+        if sys.version_info >= (3, 11):
+            level = logging.getLevelNamesMapping()[level]  # Python >=3.11
+        else:
+            level = logging._nameToLevel[level]
     logger.setLevel(int(level))
     logger.info(f"Logging level set to {level}")
 

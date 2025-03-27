@@ -15,6 +15,8 @@ set_logging_level('info')
 
 def test_run_nexus2srs():
     # Make folder /test
+    if os.path.isdir(NEW_FOLDER):
+        shutil.rmtree(NEW_FOLDER)
     os.makedirs(NEW_FOLDER, exist_ok=True)
     print(f"Create folder : {NEW_FOLDER} : {os.path.isdir(NEW_FOLDER)}")
     command = f"python -m nexus2srs \"{FILE_NEW_NEXUS}\" \"{NEW_FOLDER}\" -tiff"
@@ -32,9 +34,11 @@ def test_run_nexus2srs():
 
 def test_synchronise():
     # Make folder /test
+    if os.path.isdir(SPOOL_FOLDER):
+        shutil.rmtree(SPOOL_FOLDER)
     os.makedirs(SPOOL_FOLDER, exist_ok=True)
     print(f"Create folder : {SPOOL_FOLDER} : {os.path.isdir(SPOOL_FOLDER)}")
-    command = f"python -m nexus2srs \"{DATA_FOLDER}\""
+    command = f"python -m nexus2srs \"{DATA_FOLDER}\" --info"
     print('Running command:')
     print(command)
     output = subprocess.run(command, shell=True, capture_output=True)

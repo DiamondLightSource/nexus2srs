@@ -4,10 +4,13 @@ Command line program
 
 import sys
 import os
+import logging
 from time import sleep, ctime, time
 from hdfmap import list_files
 from nexus2srs import nxs2dat, set_logging_level
 
+
+logger = logging.getLogger(__name__)
 DAT_SUBFOLDER = 'spool'  # DLS specific
 
 
@@ -20,6 +23,7 @@ def default_srs_folder(nexus_folder: str, srs_folder: str | None = None) -> str:
     """Return default folder for converted dat files"""
     if srs_folder is None:
         srs_folder = os.path.join(nexus_folder, DAT_SUBFOLDER)
+    logger.info(f"srs_folder: {srs_folder}, exists: {os.path.isdir(srs_folder)}")
     if not os.path.isdir(srs_folder):
         raise FileNotFoundError(f"Folder doesn't exist: {srs_folder}")
     return srs_folder
@@ -30,15 +34,19 @@ def synchronise_files(nexus_folder, srs_folder=None, write_tiff=False, seconds_s
     srs_folder = default_srs_folder(nexus_folder, srs_folder)
     nexus_files = list_files(nexus_folder)
     dat_files = list_files(srs_folder)
+    logger.info(f"Synchronising {len(nexus_files)} .nxs files in {nexus_folder}\n" +
+                f" with {len(dat_files)} .dat files in {srs_folder}")
     conversions = 0
     for nxs_file in nexus_files:
         # check if file is still being written
         if os.path.getmtime(nxs_file) > time() - seconds_since_modified:
-            # print(f"Ignoring '{nxs_file}' as modified too recently")
+            logger.info(f"Ignoring '{nxs_file}' as modified too recently")
             continue
         dat_file = os.path.join(srs_folder, os.path.basename(nxs_file)[:-4] + '.dat')
         if dat_file in dat_files:
             continue
+        logger.info(f"Converting {nxs_file} to {dat_file}")
+        print(f"Converting {nxs_file} to {dat_file}")
         nxs2dat(nxs_file, dat_file, write_tiff)
         conversions += 1
     return conversions
