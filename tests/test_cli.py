@@ -35,9 +35,11 @@ def test_run_nexus2srs():
 def test_synchronise():
     # Make folder /test
     if os.path.isdir(SPOOL_FOLDER):
+        print('Removing folder')
         shutil.rmtree(SPOOL_FOLDER)
     os.makedirs(SPOOL_FOLDER, exist_ok=True)
     print(f"Create folder : {SPOOL_FOLDER} : {os.path.isdir(SPOOL_FOLDER)}")
+    print(os.listdir(SPOOL_FOLDER))
     command = f"python -m nexus2srs \"{DATA_FOLDER}\" --info"
     print('Running command:')
     print(command)
