@@ -38,15 +38,12 @@ def synchronise_files(nexus_folder, srs_folder=None, write_tiff=False, seconds_s
                 f" with {len(dat_files)} .dat files in {srs_folder}")
     conversions = 0
     for nxs_file in nexus_files:
-        print(f"Synchronising file: {nxs_file}")
         # check if file is still being written
         if os.path.getmtime(nxs_file) > time() - seconds_since_modified:
             logger.info(f"Ignoring '{nxs_file}' as modified too recently")
-            print('Ignoring')
             continue
         dat_file = os.path.join(srs_folder, os.path.basename(nxs_file)[:-4] + '.dat')
         if dat_file in dat_files:
-            print(f"'{dat_file}' already exists")
             continue
         logger.info(f"Converting {nxs_file} to {dat_file}")
         print(f"Converting {nxs_file} to {dat_file}")
@@ -117,7 +114,7 @@ def run_nexus2srs(*args):
                 continuous_sync(arg, srs_folder, '-tiff' in args)
                 break
             else:
-                tot = synchronise_files(arg, srs_folder, '-tiff' in args)
+                tot = synchronise_files(arg, srs_folder, '-tiff' in args, 0)
                 break
     
     print('\nCompleted %d conversions' % tot)
