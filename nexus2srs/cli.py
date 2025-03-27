@@ -79,8 +79,6 @@ def run_nexus2srs(*args):
         run_nexus2srs('/path/file.nxs', '-tiff') -> converts single file with TIFF generation
         run_nexus2srs('/path', '-tiff') -> converts all files in /path to dat files in /path/spool
     """
-    print('args:')
-    print('\n'.join(args))
     if any(arg.lower() in ['-h', '--help', 'man'] for arg in args):
         doc()
         return

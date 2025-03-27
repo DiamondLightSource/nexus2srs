@@ -16,6 +16,7 @@ set_logging_level('info')
 def test_run_nexus2srs():
     # Make folder /test
     os.makedirs(NEW_FOLDER, exist_ok=True)
+    print(f"Create folder : {NEW_FOLDER} : {os.path.isdir(NEW_FOLDER)}")
     command = f"python -m nexus2srs \"{FILE_NEW_NEXUS}\" \"{NEW_FOLDER}\" -tiff"
     print('Running command:')
     print(command)
@@ -32,13 +33,13 @@ def test_run_nexus2srs():
 def test_synchronise():
     # Make folder /test
     os.makedirs(SPOOL_FOLDER, exist_ok=True)
+    print(f"Create folder : {SPOOL_FOLDER} : {os.path.isdir(SPOOL_FOLDER)}")
     command = f"python -m nexus2srs \"{DATA_FOLDER}\""
     print('Running command:')
     print(command)
     output = subprocess.run(command, shell=True, capture_output=True)
     print('\nOutput:')
     print(output.stdout.decode())
-    run_nexus2srs(*command.split())
 
     nexus_files = [file for file in os.listdir(DATA_FOLDER) if file.endswith('.nxs')]
     dat_files = [file for file in os.listdir(SPOOL_FOLDER) if file.endswith('.dat')]
