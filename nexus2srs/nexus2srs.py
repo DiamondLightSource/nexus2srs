@@ -11,14 +11,14 @@ import os
 import datetime
 import re
 import logging
+import shutil
 
 import h5py
 import numpy as np
-from numpy import ndindex
 import hdfmap
 
-__version__ = "1.0.3"
-__date__ = "2025/03/25"
+__version__ = "1.1.0"
+__date__ = "2025/04/02"
 
 logging.basicConfig()   # setup logging
 logger = logging.getLogger(__name__)  # set level using logger.setLevel(0)
@@ -137,7 +137,8 @@ def nexus_detectors(hdf_file: h5py.File, hdf_map: hdfmap.HdfMap) -> (dict, dict)
     :return: {'detector_path_template': 'image_path_template'}, {'detector_name': (path, template)}
     """
     metadata = {}
-    detector_image_paths = {}
+    detector_image_paths = {}  # only contains paths of array datasets, not image lists
+    used_image_datasets = []
     # Check for 'image_data' field (these files should exist already)
     if NXIMAGE in hdf_map:
         # image_data is an array of tif image names
@@ -157,16 +158,22 @@ def nexus_detectors(hdf_file: h5py.File, hdf_map: hdfmap.HdfMap) -> (dict, dict)
                 name = 'detector'
             logger.debug(f"'{name}_path_template': {template}")
             metadata[f"{name}_path_template"] = template
+            detector_image_paths[name] = (hdf_map[NXIMAGE], template)  # not an image array!
+            used_image_datasets.append(image_data_dataset)
         else:
             logger.warning(f"'{NXIMAGE}' available but failed to produce image_path")
 
     # build image path from detector class names
     filename, ext = os.path.splitext(os.path.basename(hdf_file.filename))
     for name, path in hdf_map.image_data.items():
+        dataset = hdf_file[path]
+        if dataset in used_image_datasets:
+            continue  # don't save the same images twice
         template = f"{filename}-{name}-files/{PATH_TEMPLATE}"
         logger.debug(f"'{name}_path_template': {template}")
         metadata[f"{name}_path_template"] = template
         detector_image_paths[name] = (path, template)
+        used_image_datasets.append(dataset)
     return metadata, detector_image_paths
 
 
@@ -217,6 +224,7 @@ def generate_datafile(hdf_file: h5py.File, hdf_map: hdfmap.HdfMap) -> (str, dict
 def write_tiffs(hdf: h5py.File, save_dir: str, detector_image_paths: dict):
     """
     Extract image frames from detectors and save as TIFF images
+    If TIFF images exist already, they are copied to the new location.
     :param hdf: h5py.File object
     :param save_dir: str name of directory to create image folder '{scan}-{detector}-files/'
     :param detector_image_paths: {'detector_name': ('path', 'template')}
@@ -235,12 +243,22 @@ def write_tiffs(hdf: h5py.File, save_dir: str, detector_image_paths: dict):
             logger.info('Created folder: %s' % det_dir)
         # Write TIFF images
         data = hdf.get(hdf_path)
-        if data and isinstance(data, h5py.Dataset) and data.ndim >= 3:
-            # Assume first index is the scan index
-            for im, idx in enumerate(ndindex(data.shape[:-2])):  # ndindex returns index iterator of each image
-                image = data[idx]
-                logger.info(f"{im_file % (im + 1)}, {idx}, {image.shape}")
-                write_image(image, im_file % (im + 1))
+        if data and isinstance(data, h5py.Dataset):
+            if not np.issubdtype(data, np.number):
+                # dataset is a list of TIF images - copy the files to the new location
+                for im, idx in enumerate(np.ndindex(data.shape)):
+                    data_dir = os.path.dirname(hdf.filename)
+                    old_file = os.path.join(data_dir, template % (im + 1))
+                    new_file = im_file % (im + 1)
+                    if os.path.isfile(old_file) and not os.path.isfile(new_file):
+                        logger.info(f"{idx} copying {old_file} to {new_file}")
+                        shutil.copy2(old_file, new_file)
+            elif data.ndim >= 3:
+                # Assume first index is the scan index
+                for im, idx in enumerate(np.ndindex(data.shape[:-2])):  # ndindex returns index iterator of each image
+                    image = data[idx]
+                    logger.info(f"{im_file % (im + 1)}, {idx}, {image.shape}")
+                    write_image(image, im_file % (im + 1))
 
 
 "----------------------------------------------------------------------------"

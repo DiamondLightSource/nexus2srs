@@ -65,7 +65,7 @@ def test_nxs2dat_3d_i06():
         os.remove(new_file)
     nxs2dat(nexus_file, new_file, True)
     assert os.path.exists(new_file), "file conversion not completed"
-    assert os.path.exists(DATA_FOLDER + '/i06-353130-medipix-files/00001.tif'), "tif file writing imcomplete"
+    assert os.path.exists(DATA_FOLDER + '/i06-353130-medipix-files/00001.tif'), "tif file writing incomplete"
     # remove tif files
     shutil.rmtree(DATA_FOLDER + '/i06-353130-medipix-files')
     # Check dat file
