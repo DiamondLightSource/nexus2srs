@@ -77,6 +77,7 @@ def run_nexus2srs(*args):
         /folder     convert all folder/*.nxs files to folder/spool/*.dat
         /folder /new    convert all folder/*.nxs files to new/*.dat
         -tiff       Convert detector files to TIFF images
+        -overwrite  Replace existing files
         -sync       Continuously synchronise folders
         -h, --help  Display documentation
         --info      Set logging level to INFO
@@ -106,7 +107,7 @@ def run_nexus2srs(*args):
                     args[n + 1].endswith('.dat') or os.path.isdir(args[n + 1])
             ) else None
             print(f"\n----- {arg} -----")
-            nxs2dat(arg, dat, '-tiff' in args)
+            nxs2dat(arg, dat, '-tiff' in args, '-overwrite' in args)
             look_for_dir = False
         elif look_for_dir and os.path.isdir(arg):
             srs_folder = args[n + 1] if len(args) > n + 1 and os.path.isdir(args[n + 1]) else None

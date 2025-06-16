@@ -17,8 +17,8 @@ import h5py
 import numpy as np
 import hdfmap
 
-__version__ = "1.1.0"
-__date__ = "2025/04/02"
+__version__ = "1.1.1"
+__date__ = "2025/06/16"
 
 logging.basicConfig()   # setup logging
 logger = logging.getLogger(__name__)  # set level using logger.setLevel(0)
@@ -266,7 +266,7 @@ def write_tiffs(hdf: h5py.File, save_dir: str, detector_image_paths: dict):
 "----------------------------------------------------------------------------"
 
 
-def nxs2dat(nexus_file: str, dat_file: str = None, write_tiff: bool = False):
+def nxs2dat(nexus_file: str, dat_file: str = None, write_tiff: bool = False, overwrite: bool = False):
     """
     Load HDF file and convert to classic SRS .dat file
 
@@ -278,6 +278,7 @@ def nxs2dat(nexus_file: str, dat_file: str = None, write_tiff: bool = False):
     :param nexus_file: str filename of HDF/Nexus file
     :param dat_file: str filename of ASCII file to create or folder to create in (None renames nexus file as *.dat)
     :param write_tiff: Bool, if True also writes any HDF images to TIF files in a folder
+    :param overwrite: Bool, if True, replaces existing files
     :return: None
     """
     if dat_file is None:
@@ -292,7 +293,7 @@ def nxs2dat(nexus_file: str, dat_file: str = None, write_tiff: bool = False):
         # --- get scan data and header data from HDF ---
         outstr, detector_image_paths = generate_datafile(hdf, nxs_map)
 
-        if os.path.isfile(dat_file):
+        if not overwrite and os.path.isfile(dat_file):
             logger.warning(f"File already exists: {dat_file}")
         else:
             with open(dat_file, 'wt') as newfile:
