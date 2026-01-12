@@ -128,7 +128,7 @@ def nexus_header(hdf_file: h5py.File, hdf_map: hdfmap.HdfMap) -> str:
         return HEADER % (srsrun, srsdat, srstim)
 
 
-def nexus_detectors(hdf_file: h5py.File, hdf_map: hdfmap.HdfMap) -> (dict, dict):
+def nexus_detectors(hdf_file: h5py.File, hdf_map: hdfmap.HdfMap) -> tuple[dict, dict]:
     """
     Generate detector paths from nexus file
     :param hdf_file: h5py.File object
@@ -177,7 +177,7 @@ def nexus_detectors(hdf_file: h5py.File, hdf_map: hdfmap.HdfMap) -> (dict, dict)
     return metadata, detector_image_paths
 
 
-def generate_datafile(hdf_file: h5py.File, hdf_map: hdfmap.HdfMap) -> (str, dict):
+def generate_datafile(hdf_file: h5py.File, hdf_map: hdfmap.HdfMap) -> tuple[str, dict]:
     """
     General purpose function to retrieve data from HDF files
     :param hdf_file: h5py.File object

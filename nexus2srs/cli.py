@@ -72,6 +72,7 @@ def run_nexus2srs(*args):
         run_nexus2srs(*arguments)
 
     Arguments
+        None        Display documentation
         file.nxs    Convert file.nxs to file.dat
         file.nxs newfile.dat    Convert file.nxs to newfile.dat
         /folder     convert all folder/*.nxs files to folder/spool/*.dat
@@ -99,9 +100,11 @@ def run_nexus2srs(*args):
         set_logging_level('error')
 
     tot = 0
+    n_args = 0
     look_for_dir = True
     for n, arg in enumerate(args):
         if arg.endswith('.nxs'):
+            n_args += 1
             tot += 1
             dat = args[n + 1] if len(args) > n + 1 and (
                     args[n + 1].endswith('.dat') or os.path.isdir(args[n + 1])
@@ -110,6 +113,7 @@ def run_nexus2srs(*args):
             nxs2dat(arg, dat, '-tiff' in args, '-overwrite' in args)
             look_for_dir = False
         elif look_for_dir and os.path.isdir(arg):
+            n_args += 1
             srs_folder = args[n + 1] if len(args) > n + 1 and os.path.isdir(args[n + 1]) else None
             if '-sync' in args:
                 continuous_sync(arg, srs_folder, '-tiff' in args)
@@ -117,8 +121,11 @@ def run_nexus2srs(*args):
             else:
                 tot = synchronise_files(arg, srs_folder, '-tiff' in args, 0)
                 break
-    
-    print('\nCompleted %d conversions' % tot)
+
+    if n_args > 0:
+        print('\nCompleted %d conversions' % tot)
+    else:
+        doc()
 
 
 def cli_nexus2srs():
